@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>{$goodsDetails["goodsName"]}</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+    <!--轮播-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/trundle.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+</head>
+<style>
+
+</style>
+<body>
+<!--主体部分begin-->
+<div class="wrap pad-bot">
+    <!--轮播begin 建议上传图片最佳比例2:1-->
+    <div class="main_visual">
+        <div class="flicking_con">
+            <volist name="goodsImgs" key="k" id="vo">
+                <a href="#">$k</a>
+            </volist>
+        </div>
+        <div class="main_image">
+            <ul>
+            <volist name="goodsImgs" key="k" id="vo">
+                <li><span class="img_3"><img src="__ROOT__/{$vo['goodsImg']}" ></span></li>
+            </volist>
+            </ul>
+            <a href="javascript:;" id="btn_prev"></a>
+            <a href="javascript:;" id="btn_next"></a>
+        </div>
+    </div>
+    <!--轮播end-->
+    <!--产品信息begin-->
+    <div class="detail-panel mar-bot">
+        <div class="detail-tit">
+            <h3>{$goodsDetails["goodsName"]}</h3>
+        </div>
+        <div class="img-price mar-top">
+            <span class="discount-price integral-num">{$goodsDetails.exchangeScore}</span>
+        </div>
+    </div>
+    <!--产品信息end-->
+    <!--商品详情begin-->
+    <div class="detail-main">
+        <div class="pro-dt-box box-bar">
+            <a class="pro-dt-tit">商品详情</a>
+        </div>
+        <div class="dt-bdtab">
+            <div class="dt-bdtab-inf table-wrap on">
+                {$goodsDetails["goodsDesc"]}
+            </div>
+        </div>
+    </div>
+    <!--商品详情end-->
+</div>
+<!--主体部分end-->
+<!--固定的底部begin-->
+<footer class="footer">
+    <div class="detail-footer">
+        <div class="share foot-block1 eject-btn">
+            <i class="iconfont">&#xe605;</i>
+            <p>分享</p>
+        </div>
+        <div class="buynow foot-block1 corbai"  onClick="window.location.href='{:U('Home/Users/topayForjf', array(goodsId=>$vo['goodsId']))}'">立即兑换</div>
+    </div>
+</footer>
+<!--固定的底部end-->
+<!--弹框begin-->
+<div class="prompt-wrap eje-black-wrap">
+    <div class="share-inf-box">
+        <p class="invita dt-invita">点击右上角按钮，发送给朋友或朋友圈</p>
+    </div>
+    <div class="jt-nav"></div>
+</div>
+<!--弹框end-->
+</body>
+<!--轮播begin-->
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/trundle.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/jquery.event.drag-1.5.min.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/jquery.touchSlider.js"></script>
+<!--轮播end-->
+<!--首页模块自定义js-->
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+</html>

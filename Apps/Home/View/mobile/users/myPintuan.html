@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>我的团</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+</head>
+<body style="background:#f4f6f9;">
+<!--主体部分begin-->
+<div class="wrap">
+    <div class="my-regiment-hd tab-switch-hd mar-bot">
+        <ul>
+            <li class="on"><span>拼团中</span></li>
+            <li><span>已成团</span></li>
+            <li><span>拼团失败</span></li>
+        </ul>
+    </div>
+    <div class="tab-switch-bd on">
+        <volist name="orderIng" id="vo">
+        <!--订单信息begin-->
+        <div class="order-inf box-bar " style="border-top:solid 1px #e5e5e5;">
+            <div class="item-pic cell" style="background-image: url({$vo.goodsThums});"></div>
+            <div class="item-con box-bar box-bar-col">
+                <p class="">{$vo.goodsName}</p>
+                <div class="dt-bdnum buy-bdnum">
+                    <span class="groupnum">{$vo.ptrs}人团：</span>
+                    <span class="grouppri"><b>￥{$vo.shopPrice}</b></span>
+                </div>
+            </div>
+        </div>
+        <!--订单信息end-->
+        <div class="finll-form-bar tex-r">
+            <div class="finll-form-bar my-regi-bar pad-lr">
+                <a href="/index.php?m=Home&c=Users&a=pintuanDetails&orderid={$vo.orderId}"><div class="order-btn hui fr">查看订单详情</div></a>
+                <a href="/index.php?m=Home&c=Users&a=toSharept&orderid={$vo.orderId}&goodsId={$vo.goodsId}"><div class="order-btn lv fr">邀请好友拼团</div></a>
+            </div>
+        </div>
+        </volist>
+
+    </div>
+    <div class="tab-switch-bd">
+        <volist name="orderSucc" id="vo">
+            <!--订单信息begin-->
+            <div class="order-inf box-bar " style="border-top:solid 1px #e5e5e5;">
+                <div class="item-pic cell" style="background-image: url({$vo.goodsThums});"></div>
+                <div class="item-con box-bar box-bar-col">
+                    <p class="">{$vo.goodsName}</p>
+                    <div class="dt-bdnum buy-bdnum">
+                        <span class="groupnum">{$vo.ptrs}人团：</span>
+                        <span class="grouppri"><b>￥{$vo.shopPrice}</b></span>
+                    </div>
+                </div>
+            </div>
+            <!--订单信息end-->
+            <div class="finll-form-bar tex-r">
+                <div class="finll-form-bar my-regi-bar pad-lr">
+                    <a href="/index.php?m=Home&c=Users&a=pintuanDetails&orderid={$vo.orderId}"><div class="order-btn hui fr">查看订单详情</div></a>
+                </div>
+            </div>
+        </volist>
+    </div>
+    <div class="tab-switch-bd">
+        <volist name="orderFail" id="vo">
+        <!--订单信息begin-->
+        <div class="order-inf box-bar " style="border-top:solid 1px #e5e5e5;">
+            <div class="item-pic cell" style="background-image: url({$vo.goodsThums});"></div>
+            <div class="item-con box-bar box-bar-col">
+                <p class="">{$vo.goodsName}</p>
+                <div class="dt-bdnum buy-bdnum">
+                    <span class="groupnum">{$vo.ptrs}人团：</span>
+                    <span class="grouppri"><b>￥{$vo.shopPrice}</b></span>
+                </div>
+            </div>
+        </div>
+        <!--订单信息end-->
+        <div class="finll-form-bar tex-r">
+            <div class="finll-form-bar my-regi-bar pad-lr">
+                <a href="/index.php?m=Home&c=Users&a=pintuanDetails&orderid={$vo.orderId}"><div class="order-btn hui fr">查看订单详情</div></a>
+            </div>
+        </div>
+    </volist>
+    </div>
+</div>
+<!--主体部分end-->
+</body>
+<!--首页模块自定义js-->
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+</html>

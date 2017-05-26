@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>后台管理系统</title>
+<meta name="author" content="DeathGhost" />
+<link href="__PUBLIC__/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Apps/Admin/View/css/style.css" />
+<style>
+body{height:100%;background:#16a085;overflow:hidden;}
+canvas{z-index:-1;position:absolute;}
+</style>
+<script src="__PUBLIC__/js/jquery.js"></script>
+<script src="__PUBLIC__/js/Particleground.js"></script>
+<!--[if lt IE 9]>
+<script src="__PUBLIC__/js/html5shiv.min.js"></script>
+<script src="__PUBLIC__/js/respond.min.js"></script>
+<![endif]-->
+<script src="__PUBLIC__/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/plugins/plugins/plugins.js"></script>
+<script>
+var ThinkPHP = window.Think = {
+    "ROOT"   : "__ROOT__",
+    "APP"    : "__APP__",
+    "PUBLIC" : "__PUBLIC__",
+    "DEEP"   : "{:C('URL_PATHINFO_DEPR')}",
+    "MODEL"  : ["{:C('URL_MODEL')}", "{:C('URL_CASE_INSENSITIVE')}", "{:C('URL_HTML_SUFFIX')}"],
+    "VAR"    : ["{:C('VAR_MODULE')}", "{:C('VAR_CONTROLLER')}", "{:C('VAR_ACTION')}"]
+}
+</script>
+<script src="__PUBLIC__/js/think.js"></script>
+<script>
+$(document).ready(function() {
+  //粒子背景特效
+  $('body').particleground({
+    dotColor: '#5cbdaa',
+    lineColor: '#5cbdaa'
+  });
+  //验证码
+  // createCode();
+});
+</script>
+</head>
+<body oncontextmenu=self.event.returnValue=false; onselectstart="return false">
+<dl class="admin_login">
+<form action="" method="post" class="loginForm" id="loginform">
+ <dt>
+  <strong>后台管理系统</strong>
+  <em>Management System</em>
+ </dt>
+ <dd class="user_icon">
+  <input type="text" placeholder="账号" class="login_txtbx" name='loginName' id='loginName' autocomplete="off" />
+ </dd>
+ <dd class="pwd_icon">
+  <input type="password" placeholder="密码" class="login_txtbx" name='loginPwd' id='loginPwd' autocomplete="off" />
+ </dd>
+<!--
+ <dd class="val_icon">
+  <div class="checkcode">
+    <input type="text" id="J_codetext" placeholder="验证码" maxlength="4" class="login_txtbx">
+    <canvas class="J_codeimg" id="myCanvas" onclick="createCode()">对不起，您的浏览器不支持canvas，请下载最新版浏览器!</canvas>
+  </div>
+  <input type="button" value="验证码核验" class="ver_btn" onClick="validate();">
+ </dd>
+-->
+ <dd>
+  <input type="button" value="立即登陆" class="submit_btn form-actions"/>
+ </dd>
+</form>
+</dl>
+
+<script>
+   $(function(){
+     // getVerify();
+     $('.form-actions').click(function(){
+        login();
+     });
+     $(document).keypress(function(e) { 
+       if(e.which == 13) {  
+         login();  
+       } 
+     }); 
+   })
+   function login(){
+     var params = {};
+     params.loginName = $.trim($('#loginName').val());
+     params.loginPwd = $.trim($('#loginPwd').val());
+     params.verify = $.trim($('#verfyCode').val());
+     params.id = $('#id').val();
+     // console.log(params);
+     if(params.loginName==''){
+       Plugins.Tips({title:'信息提示',icon:'error',content:'请输入账号!',timeout:1000});
+       $('#loginName').focus();
+       return;
+     }
+     if(params.loginPwd==''){
+       Plugins.Tips({title:'信息提示',icon:'error',content:'请输入密码!',timeout:1000});
+       $('#loginPwd').focus();
+       return;
+     }
+//     if(params.verify==''){
+//       Plugins.Tips({title:'信息提示',icon:'error',content:'请输入验证码!',timeout:1000});
+//       $('#verfyCode').focus();
+//       return;
+//     }
+     Plugins.waitTips({title:'信息提示',content:'正在登录，请稍后...'});
+    $.post(Think.U("Admin/index/login"),params,function(data,textStatus){
+      var json = WST.toJson(data);
+      if(json.status=='1'){
+        Plugins.setWaitTipsMsg({ content:'登录成功',timeout:1000,callback:function(){
+          location.href=Think.U("Admin/Index/index");
+        }});
+      }else if(json.status=='-2'){
+//        Plugins.closeWindow();
+//        Plugins.Tips({title:'信息提示',icon:'error',content:'验证码错误!',timeout:1000});
+//        getVerify();
+      }else{
+        Plugins.closeWindow();
+        Plugins.Tips({title:'信息提示',icon:'error',content:'账号或密码错误!',timeout:1000});
+        getVerify();
+      }
+    });
+   }
+   function getVerify() {
+     $('.verifyImg').attr('src',Think.U('Admin/Index/getVerify','rnd='+Math.random()));
+   }
+</script>
+</body>
+</html>

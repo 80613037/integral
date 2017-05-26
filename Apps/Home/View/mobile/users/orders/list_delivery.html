@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>待发货</title>
+	<!--字体图标-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+	<!--公共样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+	<!--自定义样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+	<!--jquery库有此轮播的需要引用低版本的库-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+	<!--rem自适应-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+
+	<script src="__PUBLIC__/js/common.js"></script>
+	<!--<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/layer1.js"></script>
+	<script src="__ROOT__/Apps/Home/View/mobile/js/orders/orders.js"></script>
+
+</head>
+<body style="background: #F5F5F5;">
+<!--主体部分begin-->
+<div class="wrap pad-bot">
+	<div class="hotel-wrap hotel-wrapbgnone lands-pro-wrap on">
+		<!--一条订单begin-->
+		<volist name="receiveOrders['root']" id="order" key='key1'>
+			<ul class="hotel-ul bor-b">
+				<div class="finll-form-bar pad-lr box-bar bor-b">
+					<div class="order-num box-bar-list">订单号：{$order["orderNo"]}</div>
+					<div class="order-pay cell cor">待发货</div>
+				</div>
+				<div class="finll-form-bar pad-lr box-bar bor-b">
+					<div class="order-num box-bar-list">下单日期：{$order["createTime"]}</div>
+					<div class="order-pay cell">&nbsp;</div>
+				</div>
+				<li class="hotel-list pad10">
+					<volist name="order['goodslist']" id="goods" key='key2'>
+						<a href="{:U('Home/Orders/getOrderDetailsFromMobile',array('orderId'=>$order['orderId']))}">
+						<div class="tw-panel box-bar mar-b">
+							<div class="hotel-pic-box cell">
+								<div class="hotel-pic" style="background-image:url(__ROOT__/{$goods['goodsThums']});"></div>
+							</div>
+							<div class="hotel-inf box-bar-list">
+								<h3>{$goods['goodsName']}</h3>
+								<div class="hotel-other">
+									<b class="cor fl">￥{$goods['goodsPrice']}</b>
+									<b class="fr">X{$goods['goodsNums']}</b>
+								</div>
+							</div>
+						</div>
+						</a>
+					</volist>
+				</li>
+				<div class="finll-form-bar tex-r">
+					<span>合计金额（含运费￥{$order["deliverMoney"]|default=0}）：</span><span class="cor">￥{$order["realTotalMoney"]}</span>
+				</div>
+			</ul>
+			<div class="finll-form-bar tex-r">
+				<div class="finll-form-bar">
+					<div class="order-btn tishi-btn hui fr" onclick="orderCancel({$order['orderId']},-2)">取消订单</div>
+				</div>
+			</div><br />
+		</volist>
+
+		<!--一条订单end-->
+
+	</div>
+</div>
+<!--主体部分end-->
+<!--弹窗-->
+<!--div class="tc-bd">
+	<div class="tc-bd-inner">
+		<h3>提示</h3>
+		<p>取消订单后，将不再展示。是否继续？</p>
+		<div class="wrap-btn box-bar">
+			<a class="quxiao-btn box-bar-list qx-btn">否</a>
+			<a class="sure-btn box-bar-list confi-btn" onclick="funcqx()">是</a>
+		</div>
+	</div>
+</div-->
+</body>
+</html>

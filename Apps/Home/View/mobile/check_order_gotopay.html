@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <link href="__ROOT__/Apps/Home/View/mobile/styles/product_list.css" rel="stylesheet" />
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.11.2.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+    <title>填写核对订单信息-{$CONF['mallTitle']}</title>
+    <style>
+        body{ background:#f4f6f9; }
+    </style>
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap pad-bot">
+    <input type="hidden" id="paddressId" value="{$addressList[0]['addressId']}"/>
+    <if condition="count($addressList) eq 0">
+        <a href="javascript:window.location.href='{:U('Home/UserAddress/queryByPage')}'" class="product_list_adress">
+            <img src="/Apps/Home/View/mobile/images/sy_2xsms_10dztb.png" class="sign"/>
+            <div class="content">
+                <div class="title"><span></span><span></span></div>
+                <div class="address" style="text-align: center;">您还没填写个人收货地址，请点击填写！</div>
+            </div>
+            <div class="jiao"></div>
+        </a>
+        <else/>
+        <!--<a href="javascript:window.location.href='{:U('Home/UserAddress/queryByPage',array('from'=>'gotopay','order'=>$orderid))}'" class="product_list_adress">-->
+        <a class="product_list_adress">
+            <img src="/Apps/Home/View/mobile/images/sy_2xsms_10dztb.png" class="sign"/>
+            <volist name="addressList" id="addr">
+                <div class="content">
+                    <if condition="($addr['isDefault'] eq 1) && ($addr['addressFlag'] eq 1)">
+                        <input type="hidden" name="consigneeId" id="consigneeId" value="{$addr.addressId}">
+                        <div class="title"><span>{$addr.userName}</span><span><if condition="$addr['userPhoto'] neq ''">{$addr.userPhoto}<else/>{$addr.userTel}</if></span></div>
+                        <div class="address">{$addr.areaName1}{$addr.areaName2}{$addr.areaName3}{$addr.communityName}{$addr.address}</div>
+                    </if>
+                </div>
+            </volist>
+            <div class="jiao"></div>
+        </a>
+    </if>
+
+    <div class="all_product">
+
+        <volist name="orderInfo" key="key" id="goods">
+                <div class="product_list_fx">
+                    <a href="javascript:void(0)" class="image">
+                        <img src="__ROOT__/{$goods['goodsThums']}" />
+                    </a>
+                    <a href="javascript:void(0)" class="title">
+                        {$goods.goodsName}
+                    </a>
+                    <div class="price">
+                        <span>￥{$goods['goodsPrice']}</span>
+                        <small>×{$goods['goodsNums']}</small>
+                    </div>
+                </div>
+        </volist>
+
+    </div>
+
+    <div class="product_tickets">
+        <!--<a href="javascript:void(0)">金币<small>已抵用￥3.50</small><div class="jiao"></div></a>-->
+        <a href="javascript:goldPay();">金币<small>已抵用￥{$gold_pay|default='0.00'}</small><div class="jiao"></div></a>
+        <a href="#">代金券<small>已抵用￥{$coup_pay|default='0.00'}</small><div class="jiao"></div></a>
+    </div>
+    <div class="product_all">
+        <div class="price" id="payPriceId">
+            <input type="hidden" id="gold" value="{$gold}"/>
+            <input type="hidden" id="gtotalMoney" value="{$gtotalMoney}"/>
+            <input type="hidden" id="totalMoney" value="{$totalMoney}"/>
+            总价：<span id="totalMoney_span">￥{$totalMoney}</span><small>(含运费：￥{$totalMoney-$gtotalMoney})</small>
+        </div>
+        <input type="button" value="微信支付" class="weixin" />
+        <input type="button" value="余额支付" class="yue" onclick="javascript:submitOrder_new('3');" />
+    </div>
+</div>
+<!--主体部分end-->
+<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $(".yue__").click(function () {
+            $.ajax({
+                type: "POST",
+                url : "{:U('Home/Orders/payYue')}",
+                data: {'totalMoney':$('#totalMoney').val(),'consigneeId':$('#consigneeId').val()},
+                dataType: "json",
+                success: function(data) {
+                    if(data['code'] == 1){
+                        alert(data['msg']);
+//                        window.location.href="{:U('Home/Orders/index')}";
+                    }else{
+                        alert(data['msg']);
+                    }
+                }
+            });
+
+        });
+    });
+
+    function goldPay(){
+        var orderid=GetQueryString('orderid');
+        window.location.href="/index.php?m=Home&c=Orders&a=gold_pay&f=gtpay&orderid="+orderid;
+    }
+    function GetQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+
+
+    var WST = ThinkPHP = window.Think = {
+        "ROOT"   : "__ROOT__",
+        "APP"    : "__APP__",
+        "PUBLIC" : "__PUBLIC__",
+        "DEEP"   : "{:C('URL_PATHINFO_DEPR')}",
+        "MODEL"  : ["{:C('URL_MODEL')}", "{:C('URL_CASE_INSENSITIVE')}", "{:C('URL_HTML_SUFFIX')}"],
+        "VAR"    : ["{:C('VAR_MODULE')}", "{:C('VAR_CONTROLLER')}", "{:C('VAR_ACTION')}"],
+        "DOMAIN" : "{:WSTDomain()}",
+        "CITY_ID" : "{$currArea['areaId']}",
+        "CITY_NAME" : "{$currArea['areaName']}",
+        "DEFAULT_IMG": "{:WSTDomain()}/{$CONF['goodsImg']}",
+        "MALL_NAME" : "{$CONF['mallName']}",
+        "SMS_VERFY"  : "{$CONF['smsVerfy']}",
+        "PHONE_VERFY"  : "{$CONF['phoneVerfy']}",
+        "IS_LOGIN" :"{$WST_IS_LOGIN}"
+    }
+    //    $(function() {
+    //        $('.lazyImg').lazyload({ effect: "fadeIn",failurelimit : 10,threshold: 200,placeholder:WST.DEFAULT_IMG});
+    //    });
+</script>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__ROOT__/Apps/Home/View/mobile/js/common.js"></script>
+<script src="__PUBLIC__/js/think.js"></script>
+<script src="__ROOT__/Apps/Home/View/mobile/js/orders.js"></script>
+</body>
+</html>

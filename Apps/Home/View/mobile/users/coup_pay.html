@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <link href="__ROOT__/Apps/Home/View/mobile/styles/ticket.css" rel="stylesheet" />
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.11.2.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+    <title>购物车</title>
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap pad-bot" id="coup_pay" style="padding-left:0.26rem;padding-right:0.26rem;box-sizing:border-box;">
+    <input type="hidden" id="totalMoney" value="{$totalMoney}" />
+    <volist name="listWsy" id="vo">
+        <input type="hidden" id="coupid" value="{$vo.id}">
+    <a href="javascript:void(0)" class="ticket_model">
+        <img src="__ROOT__/Apps/Home/View/mobile/images/wd_44csbk.png" class="back"/>
+        <div class="price">
+            <div class="account">￥<span id="jian">{$vo.jian}</span></div>
+            <div class="account1">满<label id="man">{$vo.man}</label>可用</div>
+        </div>
+        <div class="content">
+            <div class="title">{$vo.title}</div>
+            <div class="other">全场通用</div>
+            <div class="other">有效期至{$vo.enddate}</div>
+        </div>
+    </a>
+    </volist>
+
+</div>
+<!--主体部分end-->
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#coup_pay").click(function () {
+            var coupid = $("#coupid").val();
+            var jian = $("#jian").text();
+            var man = $("#man").text();
+            var totalMoney = $("#totalMoney").val();
+            if(Number(totalMoney) < Number(man)){
+                WST.msg("该代金券不可用！", {icon: 5});
+                setTimeout('window.location.href="/index.php?m=Home&c=Orders&a=checkOrderInfo"',2000);
+            }else{
+                var goodsId = GetQueryString('goodsId');
+                var leaderid = GetQueryString('leaderid');
+                if(GetQueryString('from') == 'ptorder'){
+                    window.location.href="/index.php?m=Home&c=Orders&a=checkPtOrderInfo&goodsId="+goodsId+"&coupid="+coupid+"&coup_pay="+jian;
+                }else if(GetQueryString('f') == 'can') {
+                    window.location.href="/index.php?m=Home&c=Orders&a=checkPtOrderInfo&goodsId="+goodsId+"&leaderid="+leaderid+"&coupid="+coupid+"&coup_pay="+jian+"&f=can";
+                }else {
+                    window.location.href = "/index.php?m=Home&c=Orders&a=checkOrderInfo&coupid=" + coupid + "&coup_pay=" + jian;
+                }
+            }
+
+        })
+    })
+
+    function GetQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+</script>
+</body>
+</html>

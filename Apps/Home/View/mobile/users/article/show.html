@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>我的消息</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/wode.css">
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+</head>
+<body style="background: #F5F5F5;">
+<input type="hidden" name="con" id="con" value="{$show.articleContent}">
+<div id="cont" class="xiaoxi us-gy"></div>
+<script>
+    var con =  $("#con").val();
+    $("#cont").html(con);
+</script>
+</body>
+</html>

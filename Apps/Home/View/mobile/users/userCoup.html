@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>我的代金券</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/swiper.min.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/wode.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/swiper.min.js"></script>
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/idangerous.swiper.min.js"></script>
+
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+</head>
+<body>
+<div class="wode">
+    <header class="favor-header-bar">
+        <ul class="tabs">
+            <li class="default"><a href="javascript:void(0);" id="btn1" hidefocus="true">未使用</a></li>
+            <li><a href="javascript:void(0);" id="btn2" hidefocus="true">已使用/已过期</a></li>
+        </ul>
+    </header>
+    <div class="swiper-container favor-list">
+        <div class="swiper-wrapper">
+            <!-- 第一部分 -->
+            <div class="swiper-slide">
+                <volist name="listWsy" id="vo">
+                <div class="weisy">
+                    <div class="wsy-left">
+                        <img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_44csbk.png" alt="">
+                        <div class="pric-man">
+                            <p class="jine">￥ {$vo.jian}</p>
+                            <p class="man">满{$vo.man}可用</p>
+                        </div>
+                    </div>
+                    <div class="wsy-right">
+                        <p class="xyhzc">{$vo.title}</p>
+                        <p class="qcty">全场通用</p>
+                        <p class="qcty">有效期至{$vo.enddate}</p>
+                    </div>
+                </div>
+                </volist>
+            </div>
+
+
+            <div class="swiper-slide">
+                <volist name="listYsy" id="vo">
+                <div class="weisy">
+                    <div class="wsy-left">
+                        <img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_44csbkh.png" alt="">
+                        <div class="pric-man">
+                            <p class="jine-hui">￥ {$vo.jian}</p>
+                            <p class="man">满{$vo.man}可用</p>
+                        </div>
+
+                    </div>
+                    <div class="wsy-right">
+                        <p class="xyhzc">{$vo.title}<span class="yigq"><img src="__ROOT__/Apps/Home/View/mobile/images/wode/<if condition='$vo[ucstatus] eq 0'>wd_45yjsy.png<else />wd_45yjgq.png</if>" ></span></p>
+                        <p class="qcty">全场通用</p>
+                        <p class="qcty">有效期至{$vo.enddate}</p>
+                    </div>
+                </div>
+                </volist>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var mySwiper = new Swiper('.swiper-container',{
+        autoHeight: true,
+        onSlideChangeStart: function(){
+            $(".tabs .default").removeClass('default');
+            $(".tabs li").eq(mySwiper.activeIndex).addClass('default');
+        }
+    });
+    $(".tabs li").on('click',function(e){
+        e.preventDefault();
+        $(".tabs .default").removeClass('default');
+        $(this).addClass('default');
+        mySwiper.swipeTo($(this).index());
+    });
+    $(".tabs li").click(function(e){
+        e.preventDefault();
+    });
+
+</script>
+</body>
+</html>

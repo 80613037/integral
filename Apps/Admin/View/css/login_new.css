@@ -1,0 +1,21 @@
+*{ word-wrap:break-word; outline:none; }
+body{ text-align:center; background:url(../img/headerbg.png) no-repeat center 0; }
+body, td, input, textarea, select, button{ color:#555; font:14px "微软雅黑", Microsoft YaHei; }
+body, ul, dl, dd, p, h1, h2, h3, h4, h5, h6, form, fieldset { margin:0; padding:0; }
+ul { list-style:none; }
+h1, h2, h3, h4, h5, h6{ font-size:12px; }
+a{ color:#fff; text-decoration:none; }
+a img{ border:none; }
+em, cite, th{ font-style:normal; font-weight:normal; }
+input[type="text"], input[type="password"], textarea, select, .type-file-text , .editable, .editable-tarea { color: #333333; background:#FAFAFA none repeat scroll 0 0 ;  border-style: solid; border-width: 1px; border-color: #ABADB3 #E2E3EA #E2E3EA #ABADB3;}
+input[type="text"], input[type="password"], textarea, select, .type-file-text , .editable, .editable2, .editable-tarea, .editable-tarea2 { padding: 2px 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; line-height:30px; border-radius: 4px;/*Firefox\Chrome\Safari\IE9\元素圆角效果*/ resize: none;/*禁止调节元素的尺寸*/}
+input[type="text"]:focus, input[type="text"]:hover, input[type="text"]:active, input[type="password"]:focus, input[type="password"]:hover, input[type="password"]:active, textarea:hover, textarea:focus, textarea:active { color: #33464F; background-color: #fff; border: 1px solid ; border-color:#fb9337 /*#CBE9F3 #CBE9F3 #71CBEF*/;-moz-box-shadow:0 0 5px #fb9337; -webkit-box-shadow: 0 0 5px #fb9337; box-shadow: 0 0 5px #fb9337;}	
+.loginbox { width:600px; margin:120px auto 0 auto; border:1px solid #576a85; border-radius:10px; /*padding:50px 0; box-shadow:0 2px 5px #14233c;*/ background:#fff; opacity:0.9;}
+.loginbox .logo { height:60px; margin:10px auto; background:url(../img/login_logo.png) no-repeat center 0; }
+.loginbox ul { padding:20px; }
+.loginbox li { margin-bottom:10px; overflow:hidden;}
+.loginbox li label { float:left; width:160px; text-align:right; letter-spacing:2px; font-size:14px; line-height:30px; padding-right:20px;}
+.copyright{ width:300px; margin:20px auto; font-family:Tahoma; font-size:11px; color:#394962; text-shadow:0 1px 1px #576a85; }
+
+
+.signin { width:59%; color:#fff; line-height:35px; border-radius:6px; border:none; text-align:center; background:#3399ff;}

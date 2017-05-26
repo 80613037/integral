@@ -1,0 +1,74 @@
+
+----------------------------------------------------
+※※ 生产环境：注意修改
+E:\PROJECT\fys.cc\Apps\Common\Conf\config.php
+E:\PROJECT\fys.cc\zc\admin\Conf\config.php  （众筹)
+'isDevelop'=>true  // 正式环境请修改为false
+----------------------------------------------------
+
+图片路径：__ROOT__/Apps/Home/View/mobile/images/test.png
+
+css路径：__ROOT__/Apps/Home/View/mobile/styles/test.css
+
+js路径：__ROOT__/Apps/Home/View/mobile/scripts/test.js
+
+默认图片：
+<img src="__ROOT__{$vo.goodsThumb|default='__ROOT__/Apps/Home/View/mobile/images/wode/wd_1mrtx.png'}">
+/Upload/default.gif
+
+
+浮层效果：
+引用jQuery库后引用
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+WST.msg("111！", {icon: 5});
+
+或者：
+<script src="__ROOT__/Apps/Home/View/mobile/scripts/layer1.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+layer.msg('ok');
+
+注：当提示框不在中间时，引入以下文件可解决：
+<script src="__ROOT__/Apps/Home/View/mobile/scripts/layer1.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+layer.msg('ok');  ---应该是黑色框
+layer.msg('ok', {icon: 5});  --白色框
+
+
+提示后跳转：
+WST.msg('您的可用余额不足!', {icon: 5}, function(){
+    location.href= Think.U('Home/Index/ptIndex','o=del&oid='+oids);
+});
+
+// 有抖动效果
+layer.msg('您的可用余额不足!', function(){
+    location.href= 'http://baidu.com';
+});
+
+
+日志记录路径：根\Apps\Runtime\Logs\
+日志使用：
+if(C('isDevelop')){
+    WLog('log','L43sql', $sql);
+}
+
+众筹模块日志：
+if(C('isDevelop')) {
+    file_put_contents('../Apps/Runtime/Logs/zcindex0.log',json_encode($adm_session).PHP_EOL,FILE_APPENS);
+}
+
+
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+游客申请开店---同步注册用户信息到  商城以及众筹 (ShopsModel.class.php)
+商城后台 添加商户--同步注册到众筹用户（fanwe_user  列user_type 为11 是商户类型）
+
+
+商城后台添加会员信息--同步注册众筹
+商城前台用户主动注册  同步注册众筹
+
+
+// 同步注册 众筹用户
+$pwdzc = md5(I('loginPwd')); $ct = time();
+$sqlzc = "INSERT INTO fanwe_user(user_name,user_pwd,mobile,is_effect,create_time,update_time,user_level,user_type) VALUES('$phone', '$pwdzc', '$phone', 1, $ct, $ct, 8, 0)";
+$ret = M()->query($sqlzc);

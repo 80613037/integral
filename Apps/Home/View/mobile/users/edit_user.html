@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>个人资料</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/wode.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+    <script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+    <link href="__PUBLIC__/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__ROOT__/Apps/Admin/View/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 9]>
+    <script src="__PUBLIC__/js/html5shiv.min.js"></script>
+    <script src="__PUBLIC__/js/respond.min.js"></script>
+    <![endif]-->
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="__PUBLIC__/js/common.js"></script>
+    <script src="__PUBLIC__/plugins/plugins/plugins.js"></script>
+</head>
+<body style="background:#f4f6f9;">
+<div class="wode">
+    <form name="myform" method="post" id="myform" autocomplete="off">
+    <div class="person-zl">
+        <ul>
+            <li class="litx-dd box-bar">
+                <span class="tx-txt box-bar-list tex-l">头像</span>
+                <div class="per-upimg p-data cell" >
+                    <div class="nc-img1" id="preview">
+                        <if condition="$user['userPhoto'] =='' ">
+                            <img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_1mrtx.png">
+                        <else/>
+                            <img src="{:WSTImgPath($user['userPhoto'])}">
+                        </if>
+                    </div>
+                    <input class="upfile" id="filePicker" type="file" onchange="previewImage(this)" />
+                    <!--<input class="upfile" id="filePicker" type="file" />-->
+                </div>
+            </li>
+            <li class="litx-dd1">
+                <span class="tx-txt">昵称</span>
+                <span class="nc-img"><input type='text' id='userName' name='userName' value="{$user['userName']}" placeholder="请填写您的昵称" style="line-height:normal;"></span>
+            </li>
+            <li class="litx-dd1">
+                <span class="tx-txt">手机号码</span>
+                <span class="nc-img"><input type='text' id='userPhone' name='userPhone' value="{$user['userPhone']}" maxlength="11" placeholder="请填写您的手机号" style="line-height:normal;"></span>
+            </li>
+        </ul>
+    </div>
+    <div class="bc-btn">
+        <a href="javascript:save();">保 存</a>
+    </div>
+    </form>
+</div>
+
+</body>
+<!--头像上传-->
+<script src="__ROOT__/Apps/Home/View/mobile/scripts/upimg.js"></script>
+<script>
+    function save(){
+        var uname = $("#userName").val();
+        var uPhone = $("#userPhone").val();
+        if(uname == ''){
+            layer.msg("请填写您的昵称！");
+            return false;
+        }
+        if(uPhone == ''){
+            layer.msg("请填写您的手机号码！");
+            return false;
+        }
+        // 没有修改头像的情况
+        if($("#imghead").val() == undefined){
+            $userPhoto = 0;
+        }else{
+            $userPhoto = $("#imghead")[0].src;
+        }
+        Plugins.waitTips({title:'信息提示',content:'正在操作，请稍后...'});
+        $.ajax({
+            type: "POST",
+            url: "{:U('Home/Users/editUser')}",
+            data: {userName:$("#userName").val(),userPhone:$("#userPhone").val(),userPhoto:$userPhoto},
+            success: function(data) {
+                if (data.status == '1') {
+                    Plugins.setWaitTipsMsg({
+                        content: '操作成功', timeout: 1000, callback: function () {
+                            location.href="index.php?m=Home&c=Users&a=index";
+                        }
+                    });
+                } else {
+                    Plugins.closeWindow();
+                    Plugins.Tips({title: '信息提示', icon: 'error', content: '操作失败!', timeout: 1000});
+                }
+            }
+        });
+    }
+</script>
+</html>

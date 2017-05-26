@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>拼团</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <!--上拉加载更多-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/scrollbar.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+    <!--上拉加载更多-->
+    <script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/iscroll.js"></script>
+    <script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/iscrollfresh-pt.js"></script>
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap" id="wrapper">
+    <div id="scroller">
+        <div id="pullDown">
+            <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+        </div>
+        <div id="thelist">
+            <!--拼团商品展示begin-->
+            <div class="pro-wrap">
+                <!--商品循环部分(建议图片200*190)begin-->
+                <volist name="goodsPt" id="vo">
+                <div class="pro-list" onClick="window.location.href='{:U('Home/Goods/getGoodsDetailsPt', array(goodsId=>$vo['goodsId']))}'">
+                    <div class="pro-img-pannel table-wrap">
+                        <img src="{$vo.goodsThums}" width="200" height="190">
+                    </div>
+                    <div class="img-title-bar">
+                        {$vo.goodsName}
+                    </div>
+                    <div class="img-price">
+                        <span class="discount-price">￥{$vo.shopPrice}</span>
+                        <del class="cost-price">￥{$vo.marketPrice}</del>
+                        <span class="group-num">{$vo.ptrs}人团</span>
+                    </div>
+                </div>
+                </volist>
+                <!--商品循环部分end-->
+            </div>
+
+        </div>
+        <div id="pullUp">
+            <!--<span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>-->
+        </div>
+    </div>
+</div>
+<!--主体部分end-->
+</body>
+</html>

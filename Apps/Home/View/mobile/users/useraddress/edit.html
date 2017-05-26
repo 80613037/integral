@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>新建地址</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+    <!--省市县三级联动-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/Popt.js"></script>
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/cityJson.js"></script>
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/citySet.js"></script>
+    <script>
+        $(function () {
+            <if condition="$object['addressId'] != 0">
+                    getAreaList('areaId2','{$object['areaId1']}',0,'{$object['areaId2']}');
+            getAreaList("areaId3",'{$object.areaId2}',1,'{$object.areaId3}');
+            getCommunitys('{$object.areaId3}','{$object.communityId}');
+            </if>
+        });
+        function sub(){
+            var userName = $("#userName").val();
+            var userPhone = $("#userPhone").val();
+            var city = $("#city").val();
+            var harea = $("#harea").attr("data-id");
+            var hproper = $("#hproper").attr("data-id");
+            var hcity = $("#hcity").attr("data-id");
+            var address = $("#address").val();
+            if(userName && userPhone && harea && hproper && hcity && address){
+                if(!(/^1(3|4|5|7|8)\d{9}$/.test(userPhone))){
+                    WST.msg("手机号码有误，请重填！", {icon: 5});
+                    return false;
+                }
+                var addressId = GetQueryString('addressId');
+                if(addressId>0){
+                    $.ajax({
+                        type: "GET",
+                        url : "{:U('Home/UserAddress/edit_new')}",
+                        data: {'addressId':addressId,'uname':userName,'uphone':userPhone,'harea':harea,'hproper':hproper,'hcity':hcity,'address':address},
+                        dataType: "json",
+                        success: function(data) {
+                            if(data==1){
+                                WST.msg('修改成功！', {icon: 1}, function(){
+                                    if(GetQueryString('from')=='order'){ // 下订单页面跳转
+                                        window.location.href="{:U('Home/UserAddress/queryByPage',array('from'=>'order'))}";
+                                    }else if(GetQueryString('from')=='user'){
+                                        window.location.href="{:U('Home/UserAddress/queryByPage',array('from'=>'user'))}";
+                                    }else if(GetQueryString('from')=='jforder'){
+                                        window.location.href="{:U('Home/UserAddress/queryByPage',array('from'=>'jforder'))}";
+                                    }else{
+                                        location.reload(false);
+                                    }
+                                });
+                            }else{
+                                WST.msg("系统繁忙，请稍后再试！", {icon: 5});
+                            }
+                        }
+                    });
+                }else{
+                    $.ajax({
+                        type: "GET",
+                        url : "{:U('Home/UserAddress/edit_new')}",
+                        data: {'uname':userName,'uphone':userPhone,'harea':harea,'hproper':hproper,'hcity':hcity,'address':address},
+                        dataType: "json",
+                        success: function(data) {
+                            if(data==1){
+//                            window.location.href="{:U('Home/UserAddress/queryByPage')}";
+                                WST.msg('添加成功！', {icon: 1}, function(){
+                                    if(GetQueryString('from')=='order'){ // 下订单页面跳转
+                                        window.location.href="{:U('Home/UserAddress/queryByPage',array('from'=>'order'))}";
+                                    }else if(GetQueryString('from')=='user'){
+                                        window.location.href="{:U('Home/UserAddress/queryByPage',array('from'=>'user'))}";
+                                    }else if(GetQueryString('from')=='jforder'){
+                                        window.location.href="{:U('Home/UserAddress/queryByPage',array('from'=>'jforder'))}";
+                                    }else{
+                                        location.reload(false);
+                                    }
+                                });
+                            }else{
+                                WST.msg("系统繁忙，请稍后再试！", {icon: 5});
+                            }
+                        }
+                    });
+                }
+            }else{
+                WST.msg("请完善您的收货信息！", {icon: 5});
+                return false;
+            }
+        }
+        function GetQueryString(name){
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+    </script>
+</head>
+<body>
+<!--主体部分begin-->
+
+<form name="myform" method="post" id="myform" autocomplete="off">
+    <input type='hidden' id='id' value='{$object['addressId']}'/>
+    <div class="wrap pad-bot1">
+        <div class="single-row box-bar pad10">
+            <div class="tit">收货人</div>
+            <div class="box-bar-list">
+                <input class="inp-style" id='userName' name='userName' type="text" value='{$object['userName']}' autocomplete="off" placeholder="请输入姓名">
+            </div>
+        </div>
+        <div class="single-row box-bar pad10">
+            <div class="tit">联系方式</div>
+            <div class="box-bar-list">
+                <input class="inp-style" type="text" maxlength="11" id='userPhone' name='userPhone' value='{$object['userPhone']}' autocomplete="off" placeholder="请输入手机号码" onkeyup="javascript:WST.isChinese(this,1)" onkeypress="return WST.isNumberdoteKey(event)" >
+            </div>
+        </div>
+        <div class="single-row box-bar pad10">
+            <div class="tit">所在地区</div>
+            <div class="box-bar-list">
+                <if condition="I('addressId') gt 27">
+                    <input class="inp-style" id="city" type="text" autocomplete="off" placeholder="请选择所在地区" value='{$object['sheng']}-{$object['areaName']}-{$object['qu']}'>
+                    <input type="hidden" name="harea" data-id="{$object['areaId1']}" id="harea" value="">
+                    <input type="hidden" name="hproper" data-id="{$object['areaId2']}" id="hproper" value="">
+                    <input type="hidden" name="hcity" data-id="{$object['areaId3']}" id="hcity" value="">
+                <else/>
+                    <input class="inp-style" id="city" type="text" autocomplete="off" placeholder="请选择所在地区">
+                </if>
+            </div>
+            <div class="position-jt"></div>
+        </div>
+        <div class="single-row box-bar pad10">
+            <div class="tit">详细地址</div>
+            <div class="box-bar-list">
+                <input class="inp-style" id='address' name='address' type="text" autocomplete="off" placeholder="请输入街道地址"  value='{$object['address']}' >
+            </div>
+        </div>
+
+        <div class="single-row box-bar pad10 default-address">
+            <div class="box-bar-list">
+                <!--<span class="sel-label fl"><input type='checkbox' id='isDefault' name='isDefault' value='$object["isDefault"]' <if condition="$object['isDefault'] == 1">checked</if> /> <label for="isDefault">设为默认地址</label></span><span class="notes fl">（每次购买时会默认使用该地址）</span>-->
+            </div>
+        </div>
+    </div>
+    <!--主体部分end-->
+    <footer class="footer">
+        <div class="out-btn">
+            <a class="new-btn" href="javascript:sub();">确认</a>
+        </div>
+    </footer>
+</form>
+</body>
+<script type="text/javascript">
+    $("#city").click(function (e) {
+        SelCity(this,e);
+    });
+</script>
+<!--首页模块自定义js-->
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+
+<script src="__PUBLIC__/plugins/formValidator/formValidator-4.1.3.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__ROOT__/Apps/Home/View/default/js/usercom.js"></script>
+<script src="__ROOT__/Apps/Home/View/default/js/head.js"></script>
+<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/plugins/webuploader/webuploader.js"></script>
+<script src="__ROOT__/Apps/Home/View/default/js/common.js"></script>
+<script src="__ROOT__/Apps/Home/View/mobile/scripts/layer1.js"></script>
+<script type="text/javascript">
+    var shopId = '{$orderInfo["order"]["shopId"]}';
+    checkLogin();
+</script>
+</html>

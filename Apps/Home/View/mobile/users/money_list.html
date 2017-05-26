@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>账户余额</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/wode.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+</head>
+<body style="background: #f4f6f9;">
+<div class="wode">
+    <div class="qiandao">
+        <div class="qd-img">
+            <img src="__ROOT__/Apps/Home/View/mobile/images/wd_6ye.png" alt="">
+        </div>
+        <div class="qd-wz">
+            账户余额：<b style="font-size:0.48rem">{$userMoney}</b>
+        </div>
+        <div class="jfsc">
+            <a href="/index.php?m=Home&c=Users&a=toCharge">去充值</a>
+        </div>
+    </div>
+    <div class="zh-detail">
+        <h3>账户明细</h3>
+        <span></span>
+        <ul>
+            <volist name="uMoneyInfo" id="uMInfo">
+                <li>
+                    <if condition="$uMInfo['moneyType'] eq 1">
+                        <p>{$uMInfo.moneyRemark}<span>+{$uMInfo.money}</span></p>
+                        <else/>
+                        <p>{$uMInfo.moneyRemark}<span>-{$uMInfo.money}</span></p>
+                    </if>
+                    <p class="date-aa">{$uMInfo.createTime|substr=0,10}</p>
+                </li>
+            </volist>
+
+        </ul>
+    </div>
+</div>
+</body>
+</html>

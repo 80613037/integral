@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>商品分类-{$CONF['mallTitle']}</title>
+	<!--字体图标-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+	<!--公共样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+	<!--自定义样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+	<!--上拉加载更多-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/scrollbar.css">
+	<!--jquery库有此轮播的需要引用低版本的库-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+	<!--rem自适应-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+	<!--上拉加载更多-->
+	<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/iscroll.js"></script>
+	<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/iscrollfresh-sc.js"></script>
+</head>
+<style>	#wrapper{ top:1.25rem;} </style>
+<body>
+<input id="c1Id" type="hidden" value="{$c1Id}"/>
+<input id="c2Id" type="hidden" value="{$c2Id}"/>
+<input id="c3Id" type="hidden" value="{$c3Id}"/>
+<input type="hidden" id="msort" value="{$msort}"/>
+<div class="ser-bar" id="wst-searchbox">
+	<div class="inner-ser-bar">
+		<i class="ser-icon iconfont">&#xe60b;</i><span class="zs">搜索</span>
+		<input type="text" id="keyword" class="ser-input" data="wst_key_search" placeholder="搜索" autocomplete="off" value="{$keyWords}"/>
+	</div>
+	<div class="btn-ser" id="btnsch">搜索</div>
+</div>
+<script>
+$(function() {
+	$("#btnsch").click(function () {
+		window.location = '/index.php?m=Home&c=goods&a=getGoodsList&searchType=1&keyWords=' + $.trim($("#keyword").val());
+	});
+});
+</script>
+
+<!--主体部分begin-->
+<div class="wrap cate-wrap-con pad-top">
+	<div class="cate-wrap box-bar">
+		<div class="cate-menu cell">
+			<div class="tepin-wrap">
+				<ul>
+					<h3 class="tepin" <if condition="I('c2Id') eq 61"> style="color:red;"</if> >特品汇</h3>
+					<volist name="catList['0']['catChildren']" id="cl">
+						<a href="{:U('Home/goods/getGoodsList',array('c2Id'=>$cl['parentId'],'c3Id'=>$cl['catId']))}"><li <php>if($_GET['c3Id'] == $cl['catId']){echo 'style="background:#fff;color:red;"';};</php>>{$cl.catName}</li></a>
+					</volist>
+					<h3 class="fanpin" <if condition="I('c2Id') eq 62"> style="color:red;"</if> >凡品汇</h3>
+					<volist name="catList['1']['catChildren']" id="cl">
+						<a href="{:U('Home/goods/getGoodsList',array('c2Id'=>$cl['parentId'],'c3Id'=>$cl['catId']))}"><li <php>if($_GET['c3Id'] == $cl['catId']){echo 'style="background:#fff;color:red;"';};</php>>{$cl.catName}</li></a>
+					</volist>
+				</ul>
+			</div>
+		</div>
+		<div class="cate-con box-bar-list">
+			<div class="sort-bar box-bar">
+				<div class="box-bar-list"><span <if condition="($_GET['msort'] eq 0) && $mark eq 7">class="xl on" </if> onclick="queryGoods(this,7);">销量</span></div>
+				<div class="box-bar-list"><span <if condition="($_GET['msort'] eq 0) && $mark eq 8">class="jg on" </if> onclick="queryGoods(this,8);">价格</span></div>
+			</div>
+			<div class="inner-cate-con" id="wrapper">
+				<div id="scroller">
+					<div id="pullDown">
+						<!--<span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>-->
+					</div>
+					<div id="thelist">
+						<div class="pro-wrap">
+							<!--单循环体 商品信息begin-->
+							<volist name="pages['root']" key="key" id="goods">
+							<a href="{:U('Home/Goods/getGoodsDetails/',array('goodsId'=>$goods['goodsId']))}">
+							<div class="order-inf cate-list box-bar bor-b">
+								<div class="item-pic cell" style="background-image: url(__ROOT__/{$goods['goodsThums']});"></div>
+								<div class="item-con box-bar box-bar-col" style="width:100%;">
+									<p class="cat-tit">{$goods['goodsName']}</p>
+									<div class="dt-bdnum buy-bdnum">
+										<span class="cor fl">￥{$goods['shopPrice']}</span>
+										<span class="corh fr">已售：{$goods["saleCount"]}</span>
+									</div>
+								</div>
+							</div>
+							</a>
+							</volist>
+							<!--单循环体 商品信息end-->
+						</div>
+						<div id="pullUp">
+							<!--<span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--主体部分end-->
+</body>
+<!--首页模块自定义js-->
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/js/goods.js"></script>
+<script>
+	function pullUpAction () {
+		setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+			var el, li, i;
+			el = document.getElementById('thelist');
+			str='<div class="order-inf cate-list box-bar bor-b">';
+			str+='<div class="item-pic cell" style="background-image: url(__ROOT__/Apps/Home/View/mobile/images/sy_1banner_02.jpg);"></div>';
+			str+='<div class="item-con box-bar box-bar-col"><p class="cat-tit">水果 山东烟台苹果水果 新鲜栖霞红富士苹果脆甜5斤 大果包邮</p><div class="dt-bdnum buy-bdnum"><span class="cor fl">￥20.9</span><span class="corh fr">已售：453</span></div></div>';
+			str+='</div>';
+			for (i=0; i<2; i++) {
+				$('.pro-wrap').append(str);
+			}
+			myScroll.refresh();		// 数据加载完成后，调用界面更新方法 Remember to refresh when contents are loaded (ie: on ajax completion)
+		}, 1000);	// <-- Simulate network congestion, remove setTimeout from production!
+
+	}
+</script>
+</html>

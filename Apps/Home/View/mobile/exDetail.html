@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>兑换详情</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+</head>
+<style>
+
+</style>
+<body style="background:#f4f6f9;">
+<!--主体部分begin-->
+<div class="wrap">
+    <!--收货地址begin-->
+    <div class="line-bar box-bar">
+        <div class="position-icon"></div>
+        <div class="position-inf">
+            <div class="per-inf">
+                <span class="name">收货人：{$detail.userName}</span>
+                <span class="tel">{$detail.userPhone}</span>
+            </div>
+            <div class="dt-addr">
+                {$detail.userAddress}
+            </div>
+        </div>
+        <div class="position-jt"></div>
+    </div>
+    <!--收货地址end-->
+    <!--订单信息begin-->
+    <div class="order-inf box-bar bor-b mar-bot">
+        <div class="item-pic cell" style="background-image: url({$detail.goodsThums});"></div>
+        <div class="item-con box-bar-col">
+            <p class="">{$detail.goodsName}</p>
+            <div class="hotel-other mar-top">
+                <div class="box-bar-list">
+                    <div class="img-price jifen-bar fl">
+                        <span class="discount-price integral-num cor tex-l">{$detail.exchangeScore}</span>
+                    </div>
+                </div>
+                <div class="cell corh fr">X 1</div>
+            </div>
+        </div>
+    </div>
+    <!--订单信息end-->
+    <div class="other-inf-part pad10 bgbai">
+        <div class="finll-form-bar box-bar">
+            <div class="order-pay cell widauto corh">订单号：{$detail.orderNo}</div>
+        </div>
+        <div class="finll-form-bar box-bar">
+            <div class="order-pay cell widauto corh">创建时间：{$detail.createTime}</div>
+        </div>
+        <if condition="$detail['transno'] neq NULL ">
+        <div class="finll-form-bar box-bar">
+            <div class="order-pay cell widauto corh">快递公司：{$detail.name}</div>
+        </div>
+        <div class="finll-form-bar box-bar">
+            <div class="order-pay cell widauto corh">快递单号：{$detail.transno}</div>
+        </div>
+        </if>
+    </div>
+</div>
+<!--主体部分end-->
+</body>
+<!--首页模块自定义js-->
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+</html>

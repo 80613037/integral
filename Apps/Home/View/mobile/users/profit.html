@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>我的收益</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap">
+    <!--头部信息begin-->
+    <div class="current-int-wrap profit-wrap mar-bot">
+        <div class="integral-panel mar-bot">
+            <p class="zi mar-bot">实际收益（元）</p>
+            <p class="shu">{$user['tjshouyi1']+$user['tjshouyi2']+$user['tjshouyi3']}</p>
+        </div>
+        <div class="see-js-box box-bar">
+            <div class="box-bar-list exchange-part"><a href="{:U('Home/Users/profit', array('to'=>info))}" class="rule-left fr">查看明细</a></div>
+            <div class="box-bar-list exchange-part"><a href="javascript:jiesuan();" class="record-right fl tishi-btnA">结算</a></div>
+        </div>
+        <div class="codex" onclick="window.location.href='{:U('Home/Articles/lists',array('type'=>2,'con'=>2))}'">
+            <span>规则</span>
+        </div>
+    </div>
+    <!--头部信息end-->
+    <div class="finll-form-bar box-bar bor-b pad-lr">
+        <div class="box-bar-list tex-l">我的分享团队</div>
+    </div>
+    <div class="finll-form-bar box-bar bor-b pad-lr">
+        <div class="box-bar-list tex-l">一级团队</div>
+        <div class="box-bar-list tex-r">{$user.tjrs1|default=0}人</div>
+    </div>
+    <div class="finll-form-bar box-bar bor-b pad-lr">
+        <div class="box-bar-list tex-l">二级团队</div>
+        <div class="box-bar-list tex-r">{$user.tjrs2|default=0}人</div>
+    </div>
+</div>
+<!--主体部分end-->
+<!--弹窗-->
+<div class="tc-bd">
+    <div class="tc-bd-inner">
+        <h3>提示</h3>
+        <p>是否结算当前收益，结算后的收
+            益进入余额？</p>
+        <div class="wrap-btn box-bar">
+            <a class="quxiao-btn box-bar-list">取消</a>
+            <a class="sure-btn box-bar-list">确定</a>
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+
+<script type="text/javascript">
+    function jiesuan(){
+        layer.confirm('结算后的收益将进入余额！',{icon: 7, title:'系统提示'}, function(tips){
+            layer.close(tips);
+            var ll = layer.load('数据处理中，请稍候...');
+            jQuery.post("/index.php?m=Home&c=Users&a=jiesuan" ,{id:1,type:1},function(data) {
+                var json = WST.toJson(data,1);
+                console.info(json.status);
+                if(json.status==1){
+                    layer.close(ll);
+                    WST.msg('结算成功！', {icon: 1});
+                    setTimeout('window.location.href="/index.php?m=Home&c=Users&a=index";',2000);
+                }else{
+                    WST.msg('结算失败，请稍后再试!');
+                }
+            });
+        });
+    }
+
+</script>
+</html>

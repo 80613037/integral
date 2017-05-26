@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>常见问题</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap">
+    <volist name="lists" id="vo" key='i'>
+    <a href="{:U('Home/Articles/lists',array('type'=>1,'con'=>$vo['articleId']))}">
+        <div class="single-row box-bar pad10" onclick="window.location.href='#'">
+            <div class="tit">{$vo.articleTitle}</div>
+            <div class="box-bar-list"></div>
+            <div class="position-jt"></div>
+        </div>
+    </a>
+    </volist>
+</div>
+<!--主体部分end-->
+</body>
+</html>

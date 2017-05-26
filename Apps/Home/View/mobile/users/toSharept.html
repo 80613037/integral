@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>参团</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+</head>
+<style>
+
+</style>
+<body style="background:#f4f6f9;">
+<!--主体部分begin-->
+<div class="wrap pad-bot">
+    <!--订单信息begin-->
+    <div class="order-inf box-bar mar-bot">
+        <div class="item-pic cell" style="background-image: url({$details.goodsThums});"></div>
+        <div class="item-con box-bar box-bar-col">
+            <p class="">{$details.goodsName}</p>
+            <div class="dt-bdnum buy-bdnum">
+                <span class="groupnum">{$details.ptrs}人团：</span>
+                <span class="grouppri"><b>￥{$details.shopPrice}</b></span>
+            </div>
+        </div>
+    </div>
+    <!--订单信息end-->
+    <!--加入人数begin-->
+    <div class="affiliate-wrap">
+        <ul class="affiliate-wrap-ul">
+            <li>
+                <div class="person-box" style="background-image:url({$details.info.leader.userPhoto});">
+                    <span class="sign-span">团长</span>
+                </div>
+            </li>
+            <volist name="users" id="vo">
+            <li>
+                <div class="person-box" style="background-image:url({$vo.userPhoto|default='__ROOT__/Apps/Home/View/mobile/images/wode/wd_1mrtx.png'});"></div>
+            </li>
+            </volist>
+            <volist name="defaultUsers" id="vo">
+            <li>
+                <div class="person-box"></div>
+            </li>
+            </volist>
+        </ul>
+    </div>
+    <!--加入人数end-->
+    <div class="affiliate-count">
+        还差<span class="cor"> {$details['ptrs']-$count-1} </span>人，期待您的加入哦~
+    </div>
+    <div class="count-down-panel">
+        剩余
+        <div class="time-item join-time-item">
+            <strong id="t_d">0</strong>
+            <strong id="t_h">0</strong>
+            <strong id="t_m">0</strong>
+            <strong id="t_s">0</strong>
+        </div><!--倒计时模块-->
+        结束
+    </div>
+    <!--参团人信息begin-->
+    <div class="single-row team-buy head-team-buy box-bar mar-bot">
+        <div class="tit-img" style="background-image: url({$details.info.leader.userPhoto});"></div>
+        <div class="box-bar-list shop-name">
+            {$details.info.leader.userName}
+        </div>
+        <div class="team-ri">{$details.info.leader.leaderdate.startdate}  开团</div>
+        <input type="hidden" id="enddate" value="{$details.info.leader.leaderdate.enddate}">
+    </div>
+    <volist name="users" id="vo">
+        <div class="single-row team-buy head-team-buy-users box-bar mar-bot" style="border:none;">
+            <div class="tit-img" style="background-image: url({$vo.userPhoto|default='__ROOT__/Apps/Home/View/mobile/images/wode/wd_1mrtx.png'});"></div>
+            <div class="box-bar-list shop-name">
+                {$vo.userName}
+            </div>
+            <div class="team-ri">{$vo.startdate}  参团</div>
+        </div>
+    </volist>
+    <!--参团人信息end-->
+</div>
+<!--主体部分end-->
+<!--固定的底部begin-->
+<footer class="footer">
+    <div class="detail-footer join-group-footer">
+        <div class="share foot-block1" onclick="window.location.href='index.php?m=Home&c=Index&a=ptIndex'">
+            <p>更多拼团</p>
+        </div>
+        <div class="buynow foot-block1">还差{$details['ptrs']-$count-1}人拼团成功</div>
+    </div>
+</footer>
+<!--固定的底部end-->
+<!--弹框begin-->
+<div class="prompt-wrap">
+    <div class="share-inf-box">
+        <p class="invita">还差<span class="cor">{$details['ptrs']-$count-1}</span>人，邀请好友参团吧</p>
+        <p class="send">点击右上角按钮，发送给朋友或群聊</p>
+    </div>
+    <p class="share-p">点击此处<span class="cor">分享到朋友圈</span></p>
+    <div class="jt-nav"></div>
+</div>
+<!--弹框end-->
+</body>
+<!--首页模块自定义js-->
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/share.js"></script>
+<script>
+    function GetRTime(){
+        var endtime = document.getElementById("enddate").value;
+        var EndTime= new Date(endtime); // '2016-12-22 14:45:40'
+        var NowTime = new Date();
+        var t =EndTime.getTime() - NowTime.getTime();
+        var d=0;
+        var h=0;
+        var m=0;
+        var s=0;
+        if(t>=0){
+            d=Math.floor(t/1000/60/60/24);
+            h=Math.floor(t/1000/60/60%24);
+            m=Math.floor(t/1000/60%60);
+            s=Math.floor(t/1000%60);
+        }
+        document.getElementById("t_d").innerHTML = d + "天";
+        document.getElementById("t_h").innerHTML = h + "时";
+        document.getElementById("t_m").innerHTML = m + "分";
+        document.getElementById("t_s").innerHTML = s + "秒";
+    }
+    setInterval(GetRTime, 0);
+</script>
+</html>

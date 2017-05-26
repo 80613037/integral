@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>{$CONF['mallTitle']}</title>
+	<!--字体图标-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+	<!--公共样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+	<!--自定义样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+	<!--轮播-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/trundle.css">
+	<!--上拉加载更多-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/scrollbar.css">
+	<!--jquery库有此轮播的需要引用低版本的库-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+	<!--rem自适应-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+	<!--需要放在头部，否则倒计时不执行-->
+	<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+	<!--上拉加载更多-->
+	<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/iscroll.js"></script>
+	<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/iscrollfresh-sc.js"></script>
+</head>
+<body style="background: #f4f6f9;">
+<!--主体部分begin-->
+<div class="wrap pad-bot" id="wrapper">
+	<div id="scroller">
+		<div id="pullDown">
+			<span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+		</div>
+		<div id="thelist">
+			<!--轮播begin 建议上传图片最佳比例2:1-->
+			<div class="main_visual">
+				<div class="flicking_con">
+					<volist name=":getAds(1)" id="vo" key="k">
+						<a href="#">{$k}</a>
+					</volist>
+				</div>
+				<div class="main_image">
+					<ul>
+						<volist name=":getAds(1)" id="vo" key="k">
+							<li><span class="img_2"><a href="{$vo['adURL']}"><img src="__ROOT__/{$vo['adFile']}"  title="{$vo['adName']}"></a></span></li>
+						</volist>
+					</ul>
+					<a href="javascript:;" id="btn_prev"></a>
+					<a href="javascript:;" id="btn_next"></a>
+				</div>
+			</div>
+			<!--轮播end-->
+			<!--商城头部信息begin-->
+			<div class="sc-dtinf-panel">
+				<ul class="box-bar">
+					<li class="box-bar-list">
+						<div class="hd">账户余额</div>
+						<div class="bd">￥{$userinfo.userMoney|default='0.00'}</div>
+					</li>
+					<li class="box-bar-list">
+						<div class="hd">积分余额</div>
+						<div class="bd">{$userinfo.userScore|default='0'}</div>
+					</li>
+					<li class="box-bar-list">
+						<a href="{:U('Home/Goods/getGoodsList')}">
+						<div class="hd">商品分类</div>
+						<div class="bd">特品  凡品</div></a>
+					</li>
+					<li class="box-bar-list">
+						<a href="/index.php?m=Home&c=Index&a=jfmall" class="gt-change">去兑换 ></a>
+					</li>
+				</ul>
+			</div>
+			<!--商城头部信息end-->
+			<div class="seckill-hd  groups-hd xsth-hd" onclick="window.location.href='{:U('Home/Index/msIndex')}'"></div>
+			<div class="pro-wrap">
+				<!--商品循环部分(建议图片200*190)begin-->
+				<volist name="goodsMs" id="vo" key="k">
+					<div class="pro-list" onClick="window.location.href='{:U('Home/Goods/getGoodsDetails', array(goodsId=>$vo['goodsId']))}'">
+						<div class="pro-img-pannel table-wrap">
+							<img src="{$vo.goodsThums}" width="200" height="190">
+						</div>
+						<div class="img-title-bar">
+							{$vo.goodsName}
+						</div>
+						<div class="img-price">
+							<span class="discount-price">￥{$vo.shopPrice}</span>
+							<del class="cost-price">￥{$vo.marketPrice}</del>
+						</div>
+					</div>
+				</volist>
+				<!--商品循环部分end-->
+			</div>
+
+			<!--推荐标题begin-->
+			<div class="seckill-hd  groups-hd sptj-hd"></div>
+			<!--推荐标题end-->
+			<!--推荐商品展示begin-->
+			<div class="pro-wrap">
+				<!--商品循环部分(建议图片200*190)begin-->
+				<volist name="goodsListTj" id="gs">
+				<div class="pro-list">
+				<a href="{:U('Home/Goods/getGoodsDetails/',array('goodsId'=>$gs['goodsId']))}">
+					<div class="pro-img-pannel table-wrap">
+						<img src="__ROOT__/{$gs.goodsThums}" width="200" height="190">
+					</div>
+					<div class="img-title-bar">
+						{$gs.goodsName}
+					</div>
+					<div class="img-price">
+						<span class="discount-price">￥{$gs.shopPrice}</span>
+						<span class="group-num">已售：{$gs.saleCount}</span>
+					</div>
+				</a>
+				</div>
+
+				</volist>
+				<!--商品循环部分end-->
+			</div>
+			<!--推荐商品展示end-->
+		</div>
+		<div id="pullUp">
+			<span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+		</div>
+	</div>
+</div>
+<!--主体部分end-->
+<!--固定的底部begin-->
+<include file="./Apps/Home/View/mobile/footer_mobile.html" />
+<!--固定的底部end-->
+</body>
+
+<!--轮播begin-->
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/trundle.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/jquery.event.drag-1.5.min.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/jquery.touchSlider.js"></script>
+<script src="__ROOT__/Apps/Home/View/mobile/js/common.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+<!--轮播end-->
+<script type="text/javascript">
+	mobile = (/mmp|symbian|smartphone|midp|wap|phone|xoom|iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
+	if (!mobile) {
+//		alert('请使用手机打开本商城！');
+		WST.msg("请使用手机打开本商城", {icon: 5});
+		setTimeout('window.history.go(-1);',2000);
+	}
+</script>
+</html>

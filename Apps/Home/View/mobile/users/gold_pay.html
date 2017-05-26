@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <link href="__ROOT__/Apps/Home/View/mobile/styles/gold.css" rel="stylesheet" />
+    <link href="__ROOT__/Apps/Home/View/mobile/styles/shopping_list.css" rel="stylesheet" />
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.11.2.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+    <!--<script src="__ROOT__/Apps/Home/View/mobile/scripts/gold.js"></script>-->
+    <title>购物车</title>
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap pad-bot">
+    <div class="gold_header">
+        <div class="title">当前金币：<span id="totalGold">{$Totalgold}</span></div>
+        <input type="hidden" value="{$canUse}" id="canUse" />
+        <input type="text" class="gold_account" id="gold_account" placeholder="最多可用 {$canUse} 金币（注：金币与金钱兑换比例为{$s}）"/>
+        <input type="button" value="确认" class="gold_button"/>
+    </div>
+</div>
+<div class="zhezhaoceng"></div>
+<!--提示框-->
+<div class="message_warning">
+    <div class="header">
+        <div class="title">提示</div>
+        <div class="content">金币数量不足!</div>
+    </div>
+    <div class="footer">
+        <a href="javascript:void(0)" class="queding" style="width:100%;">确定</a>
+    </div>
+</div>
+<!--提示框2-->
+<div class="message_warning2">
+    <div class="header">
+        <div class="title">提示</div>
+        <div class="content">请正确填写您要使用的金币数量!</div>
+    </div>
+    <div class="footer">
+        <a href="javascript:void(0)" class="queding" style="width:100%;">确定</a>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        $(".gold_button").click(function () {
+            var totalGold = $("#totalGold").text();
+            var gold_account = $("#gold_account").val();
+            var canUse = $("#canUse").val();
+            if(Number(gold_account) > Number(totalGold)){
+                $(".zhezhaoceng").show();
+                $(".message_warning").show().animate({
+                    "opacity": "1",
+                }, "fast");
+                return false;
+            }
+            // 填写的金币数量 不能小于0，不能是非数字，不能比可用金币数多
+            if((Number(gold_account) < 0) || (isNaN(Number(gold_account))) || (Number(gold_account) > Number(canUse))){
+                $(".zhezhaoceng").show();
+                $(".message_warning2").show().animate({
+                    "opacity": "1",
+                }, "fast");
+                return false;
+            }
+            var goodsId = GetQueryString('goodsId');
+            var leaderid = GetQueryString('leaderid');
+            var orderid = GetQueryString('orderid');
+            if(GetQueryString('from') == 'ptorder'){
+                window.location.href="/index.php?m=Home&c=Orders&a=checkPtOrderInfo&goodsId="+goodsId+"&gold_pay="+gold_account;
+            }else if(GetQueryString('f') == 'can') {
+                window.location.href="/index.php?m=Home&c=Orders&a=checkPtOrderInfo&goodsId="+goodsId+"&leaderid="+leaderid+"&gold_pay="+gold_account+"&f=can";
+            }else if(GetQueryString('f') == 'gtpay') {
+                window.location.href="/index.php?m=Home&c=Orders&a=checkOrderInfo_gotopay&orderid="+orderid+"&gold_pay="+gold_account+"&f=gtpay";
+            }else{
+                window.location.href="/index.php?m=Home&c=Orders&a=checkOrderInfo&gold_pay="+gold_account;
+            }
+
+        })
+        $(".message_warning .queding").click(function () {
+            $(".message_warning").hide();
+            $(".zhezhaoceng").hide();
+            $(".message_warning").css("opacity","0")
+        })
+        $(".message_warning2 .queding").click(function () {
+            $(".message_warning2").hide();
+            $(".zhezhaoceng").hide();
+            $(".message_warning2").css("opacity","0")
+        })
+
+    })
+
+    function GetQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+</script>
+
+</html>

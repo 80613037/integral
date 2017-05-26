@@ -1,0 +1,251 @@
+<!DOCTYPE>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="shortcut icon" href="favicon.ico"/>
+	<title>购物车</title>
+	<meta name="keywords" content="{$CONF['mallKeywords']},我的购物车" />
+	<meta name="description" content="{$CONF['mallDesc']},我的购物车" />
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/css/common.css" />
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/css/cartpaylist.css" />
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/css/base.css" />
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/css/head.css" />
+
+	<script src="__PUBLIC__/js/jquery.min.js"></script>
+	<script src="__PUBLIC__/plugins/lazyload/jquery.lazyload.min.js?v=1.9.1"></script>
+	<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+	<script type="text/javascript">
+		var WST = ThinkPHP = window.Think = {
+			"ROOT"   : "__ROOT__",
+			"APP"    : "__APP__",
+			"PUBLIC" : "__PUBLIC__",
+			"DEEP"   : "{:C('URL_PATHINFO_DEPR')}",
+			"MODEL"  : ["{:C('URL_MODEL')}", "{:C('URL_CASE_INSENSITIVE')}", "{:C('URL_HTML_SUFFIX')}"],
+			"VAR"    : ["{:C('VAR_MODULE')}", "{:C('VAR_CONTROLLER')}", "{:C('VAR_ACTION')}"],
+			"DOMAIN" : "{:WSTDomain()}",
+			"CITY_ID" : "{$currArea['areaId']}",
+			"CITY_NAME" : "{$currArea['areaName']}",
+			"DEFAULT_IMG": "{:WSTDomain()}/{$CONF['goodsImg']}",
+			"MALL_NAME" : "{$CONF['mallName']}",
+			"SMS_VERFY"  : "{$CONF['smsVerfy']}",
+			"PHONE_VERFY"  : "{$CONF['phoneVerfy']}",
+			"IS_LOGIN" :"{$WST_IS_LOGIN}"
+		}
+		$(function() {
+			$('.lazyImg').lazyload({ effect: "fadeIn",failurelimit : 10,threshold: 200,placeholder:WST.DEFAULT_IMG});
+		});
+	</script>
+	<script src="__PUBLIC__/js/think.js"></script>
+
+</head>
+<body>
+<!----加载商品楼层start----->
+<div class="wst-container">
+	<div class="wst-cart-container">
+
+		<div id="showwarnmsg">
+			抱歉，您购物车中的部分商品缺货，或库存不足，请删除被标记的商品或修改购买数量再进行结算。
+		</div>
+		<div class="wst-cartlist-box">
+			<div class="wst-cartlist-head">
+				<div class="wst-head-title1">
+					<input type="checkbox" onclick='cartChkAll(this)' id="chk_all"/><label for="chk_all">&nbsp;全选</label>
+				</div>
+
+				<div class="wst-clear"></div>
+			</div><br/>
+			<div id="wst_cartlist_pbox">
+				<empty name="cartInfo['cartgoods']">
+					<div style="text-align:center;font-size:20px;line-height:80px;">
+						您的购物车空空如也，赶快开始购物吧！
+					</div>
+					<br/>
+				</empty>
+				<volist name="cartInfo['cartgoods']" id="shopgoods">
+					<div id="wst_cart_shop_{$key}" data="{$key}">
+						<div>
+							<div class="wst-head-check">
+								<input type="checkbox" onclick='cartChkShop(this)' id="chk_shop_{$key}" value="{$key}" name="chk_shop"/>
+							</div>
+							<div class="wst-cart-dp-pb1">
+								<span class="wst-cart-shop-span"><span id="sp_{$shopgoods['shopId']}">{$shopgoods["shopName"]}</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+							</div>
+							<!--<div class="wst-goods-tips">-->
+								<!--<if condition="$shopgoods['shopAtive'] eq 0">-->
+									<!--<span class="label-warning">&nbsp;休息中&nbsp;</span>&nbsp;-->
+								<!--</if>-->
+								<!--包邮起步价：¥{$shopgoods["deliveryFreeMoney"]}元-->
+							<!--</div>-->
+							<div style="clear: both;"></div>
+						</div>
+						<div class="wst-cartlist-box">
+
+							<div id="catgoodsList">
+								<volist name="shopgoods['packages']" key="key2" id="package">
+									<div class="wst-cartlist-item" id="selgoods_{$package['packageId']}_{$package['batchNo']}" class="selgoods" <if condition="$package['goodsStock'] lt $package['goodsCnt'] OR $package['goodsStock'] eq 0">style="border:2px solid red;"</if>>
+									<input type="hidden" value="<if condition="$package['goodsStock'] lt $package['goodsCnt']">-1</if>" class="goodsStockFlag"/>
+									<div class="wst-cartlist-vb">
+										<input type="checkbox" onclick='pkgCartChkGoods(this)' isPackage='1' id="chk_goods_{$package['packageId']}_{$package['batchNo']}" name="chk_goods_{$package['shopId']}" value="{$package['packageId']}" parent="{$package['shopId']}" dataId="{$package['batchNo']}" isBook="0" <if condition="$package['ischk'] eq 1">checked</if>/>
+										<input type="hidden" class="cgoodsId" isPackage='1' dataId="{$package['batchNo']}" value="{$package['packageId']}" />
+										<input type="hidden" id="price_{$package['packageId']}_{$package['batchNo']}" value="{$package['shopPrice']}" />
+									</div>
+									<div class="wst-cartlist-item-col1">
+										<div style="color: #e43e41;font-weight: bold; ">{$package['packageName']}</div>
+										<volist name="package['goods']" key="key2" id="goods">
+											<div>
+												<div class="wst-cartlist-bximg">
+													<a target="_blank" href="{:U('Home/Goods/getGoodsDetails/',array('goodsId'=>$goods['goodsId']))}" target="_blank">
+														<img src="__ROOT__/{$goods['goodsThums']}" width="60" height="60" />
+													</a>
+												</div>
+												<div class="wst-cartlist-gsname">
+													<a target="_blank" href="{:U('Home/Goods/getGoodsDetails/',array('goodsId'=>$goods['goodsId']))}" target="_blank">
+														{$goods["goodsName"]}<if condition="$goods['attrVal'] neq ''">【{$goods['attrName']}:{$goods['attrVal']}】</if>
+													</a>
+												</div>
+											</div>
+											<div class="wst-clear"></div>
+										</volist>
+									</div>
+									<div class="wst-cartlist-item-col2">
+										<a target="_blank" href="{:U('Home/Shops/toShopHome/',array('shopId'=>$goods['shopId']))}" title="{$package['goods'][0]['shopName']}">{$package['goods'][0]['shopName']}</a>
+									</div>
+
+									<div class="wst-cartlist-item-col3">
+										<div>¥{$package["shopPrice"]}元</div>
+										<volist name="package['goods']" key="key2" id="goods">
+											<div style="height:54px;line-height:20px;">
+												<div style="margin-top:2px;">¥{$goods["shopPrice"]}元</div>
+												<div style="text-decoration:line-through;color:#666666;">¥{$goods["oshopPrice"]}元</div>
+											</div>
+											<div class="wst-clear"></div>
+										</volist>
+									</div>
+									<div class="wst-cartlist-item-col4" id="stock_{$package['batchNo']}">
+										<if condition="$package['goodsStock'] egt $package['goodsCnt'] AND $package['goodsCnt'] gt 0 ">
+											有货
+											<elseif condition="$package['goodsStock'] eq 0"/>
+											<span style="color:red;">无货</span>
+											<else/>
+											<span style="color:red;">库存不足,仅剩{$package['goodsStock']}份</span>
+										</if>
+									</div>
+									<div class="wst-cartlist-item-col5">
+										<div class="wrap-input" style="">
+											<button id="numl_{$package['packageId']}_{$package['batchNo']}" class="wst-cartlist-plus" onclick="changePkgCatGoodsnum(1,{$package['shopId']},{$package['packageId']},{$package['batchNo']})">-</button>
+											<input id="buy-num_{$package['packageId']}_{$package['batchNo']}" dataId="{$goods['goodsAttrId']}" class="text" style="width: 30px; border:0px; text-align: center;" maxlength="3" value="{$package['goodsCnt']}" onkeypress="return WST.isNumberKey(event);" onkeyup="changePkgCatGoodsnum(0,{$package['shopId']},{$package['packageId']},{$package['batchNo']});" />
+											<button id="numr_{$package['packageId']}_{$package['batchNo']}" class="wst-cartlist-add" onclick="changePkgCatGoodsnum(2,{$package['shopId']},{$package['packageId']},{$package['batchNo']})">+</button>
+										</div>
+									</div>
+									<div class="wst-cartlist-item-col7">¥<span id="prc_{$package['packageId']}_{$package['batchNo']}">{$package["shopPrice"] * $package["goodsCnt"]}</span>元</div>
+									<div class="wst-cartlist-item-col8"><a href="javascript:delPckCatGoods({$package['shopId']},{$package['packageId']},{$package['batchNo']});">删除</a></div>
+									<div class="wst-clear"></div>
+							</div>
+				</volist>
+				<volist name="shopgoods['shopgoods']" key="key2" id="goods">
+
+					<div class="wst-cartlist-item" id="selgoods_{$goods['goodsId']}_{$goods['goodsAttrId']}" class="selgoods" <if condition="$goods['goodsStock'] lt $goods['cnt'] OR $goods['goodsStock'] eq 0">style="border:2px solid red;"</if>>
+					<input type="hidden" value="<if condition="$goods['goodsStock'] lt $goods['cnt']">-1</if>" class="goodsStockFlag"/>
+					<div class="wst-cartlist-vb">
+						<input type="checkbox" onclick='cartChkGoods(this)' isPackage='0' id="chk_goods_{$goods['goodsId']}_{$goods['goodsAttrId']}" name="chk_goods_{$goods['shopId']}" value="{$goods['goodsId']}" parent="{$goods['shopId']}" dataId="{$goods['goodsAttrId']}" isBook="{$goods['isBook']}" <if condition="$goods['ischk'] eq 1">checked</if>/>
+						<input type="hidden" class="cgoodsId" isPackage='0' dataId="{$goods['goodsAttrId']}" value="{$goods['goodsId']}" />
+						<input type="hidden" id="price_{$goods['goodsId']}_{$goods['goodsAttrId']}" value="{$goods['shopPrice']}" />
+					</div>
+					<div class="wst-cartlist-item-col1">
+						<div class="wst-cartlist-bximg">
+							<a target="_blank" href="{:U('Home/Goods/getGoodsDetails/',array('goodsId'=>$goods['goodsId']))}" target="_blank">
+								<img src="__ROOT__/{$goods['goodsThums']}" width="60" height="60" />
+							</a>
+						</div>
+						<div>
+							<div class="wst-cartlist-gsname">
+								<p style="line-height:;">{$goods["goodsName"]}<if condition="$goods['attrVal'] neq ''">【{$goods['attrName']}:{$goods['attrVal']}】</if></p>
+								<label style="float:right;">
+									<div class="wst-cartlist-item-col3">¥{$goods["shopPrice"]}</div>
+									<div class="wst-cartlist-item-col5">
+
+									<div class="wrap-input" style="">
+										<button id="numl_{$goods['goodsId']}_{$goods['goodsAttrId']}" class="wst-cartlist-plus" onclick="changeCatGoodsnum(1,{$goods['shopId']},{$goods['goodsId']},{$goods['goodsAttrId']},{$goods['isBook']})">-</button>
+										<input id="buy-num_{$goods['goodsId']}_{$goods['goodsAttrId']}" dataId="{$goods['goodsAttrId']}" class="text" style="width: 30px; border:0px; text-align: center;" maxlength="3" value="{$goods['cnt']}" onkeypress="return WST.isNumberKey(event);" onkeyup="changeCatGoodsnum(0,{$goods['shopId']},{$goods['goodsId']},{$goods['goodsAttrId']},{$goods['isBook']});" />
+										<button id="numr_{$goods['goodsId']}_{$goods['goodsAttrId']}" class="wst-cartlist-add" onclick="changeCatGoodsnum(2,{$goods['shopId']},{$goods['goodsId']},{$goods['goodsAttrId']},{$goods['isBook']})">+</button>
+									</div>
+							
+
+									</div>
+									<div class="wst-cartlist-item-col8"><a href="javascript:delCatGoods({$goods['shopId']},{$goods['goodsId']},{$goods['goodsAttrId']});">删除</a></div>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="wst-clear"></div>
+			</div>
+			</volist>
+
+			<if condition="count($cartInfo['cartgoods']) lt 1">
+				<div class='wst-cart-empty'>购物车中没有商品</div>
+			</if>
+		</div>
+		<div class="wst-cart-total-money">
+			总计（不含运费）:<span class="wst-cart-unin">¥<span id="shop_totalMoney_{$goods['shopId']}">{$shopgoods["totalMoney"]}</span>元&nbsp;&nbsp;</span>
+		</div>
+	</div>
+	<br/>
+</div>
+</volist>
+</div>
+<div class="checkout-buttons group" id="checkout-floatbar">
+	<div class="wst-chkod-yf1">
+		<span class="total">应付总额（不含运费）：<span style="color: red;">
+			<strong id="payPriceId">￥
+				<span id="wst_cart_totalmoney" class="wst-cart-totalmoney">{$cartInfo['gtotalMoney']}</span>
+			</strong>元</span>
+		</span>
+	</div>
+</div>
+<div>&nbsp;</div>
+<div class="cart-button clearfix">
+	<li class="wst-btn-continue" onclick="javascript:toContinue();"></li>
+	<li class="wst-btn-checkout" onclick="javascript:goToPay();" style="<if condition="count($cartInfo['cartgoods']) lt 1">display: none;</if>"></li>
+	<div class="wst-clear"></div>
+</div>
+</div>
+<div class="wst-clear"></div>
+</div>
+<!--<footer class="footer">-->
+	<!--<ul>-->
+		<!--<li class="index">-->
+			<!--<a href="{:U('Home/Index/index/')}">-->
+				<!--<span></span>-->
+				<!--<p>首页</p>-->
+			<!--</a>-->
+		<!--</li>-->
+		<!--<li class="mall on">-->
+			<!--<a href="{:U('Home/Index/mall/')}">-->
+				<!--<span></span>-->
+				<!--<p>商城</p>-->
+			<!--</a>-->
+		<!--</li>-->
+		<!--<li class="cart">-->
+			<!--<a href="{:U('Home/Cart/getCartInfo/')}">-->
+				<!--<span></span>-->
+				<!--<p>购物车</p>-->
+			<!--</a>-->
+		<!--</li>-->
+		<!--<li class="user">-->
+			<!--<a href="../4我的/wd-syno.html">-->
+				<!--<span></span>-->
+				<!--<p>我的</p>-->
+			<!--</a>-->
+		<!--</li>-->
+	<!--</ul>-->
+<!--</footer>-->
+
+</body>
+<!--<include file="./Apps/Home/View/mobile/footer_mobile.html" />-->
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__ROOT__/Apps/Home/View/mobile/js/head.js" type="text/javascript"></script>
+<script src="__ROOT__/Apps/Home/View/mobile/js/common.js" type="text/javascript"></script>
+<script src="__ROOT__/Apps/Home/View/mobile/js/cartpaylist.js"></script>
+</html>

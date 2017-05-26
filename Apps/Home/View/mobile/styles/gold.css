@@ -1,0 +1,10 @@
+﻿.gold_header {width:100%;height:2.7rem;background:white;margin-top:0.4rem;box-sizing:border-box;padding:0.35rem 0.26rem;margin-bottom:1rem;position:relative;
+}
+    .gold_header .title {width:100%;height:1rem;text-align:center;line-height:1rem;color:#dd2727;font-size:0.4rem;
+    }
+    .gold_header .title span{font-size:0.5rem;font-weight:bold;
+    }
+    .gold_header .gold_account {width:100%;height:1rem;line-height:1rem;box-sizing:border-box;padding:0 0.26rem;border:1px solid #d9d9d9;
+    }
+.gold_button {width:100%;height:1rem;background:#dd2727;color:white;font-size:0.4rem;border:none;position:relative;top:1.35rem;cursor:pointer;
+}

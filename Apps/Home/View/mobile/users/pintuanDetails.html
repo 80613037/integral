@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>我的团</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+</head>
+
+<body style="background:#f4f6f9;">
+<!--主体部分begin-->
+<div class="wrap">
+    <!--收货地址begin-->
+    <div class="line-bar box-bar">
+        <div class="position-icon"></div>
+        <div class="position-inf">
+            <div class="per-inf">
+                <span class="name">收货人：{$details.userName}</span>
+                <span class="tel">{$details.userPhone}</span>
+            </div>
+            <div class="dt-addr">
+                {$details.areaName} {$details.userAddress}
+            </div>
+        </div>
+        <div class="position-jt"></div>
+    </div>
+    <!--收货地址end-->
+    <!--订单信息begin-->
+    <div class="order-inf box-bar bor-b">
+        <div class="item-pic cell" style="background-image: url({$details.goodsThums});"></div>
+        <div class="item-con box-bar-col">
+            <p class="">{$details.goodsName}</p>
+            <div class="dt-bdnum buy-bdnum">
+                <span class="groupnum">{$details.ptrs}人团：</span>
+                <span class="grouppri"><b>￥{$details.shopPrice}</b></span>（优惠券可抵扣￥{$details['needPay']-$details['realTotalMoney']}）
+            </div>
+        </div>
+    </div>
+    <div class="finll-form-bar tex-r mar-bot">
+        <span class="pad-r">共1件商品  </span><span>合计：</span><span class="cor pad-r">￥{$details.realTotalMoney}</span><span>（含运费：￥{$details.deliverMoney}）</span>
+    </div>
+    <!--订单信息end-->
+    <div class="other-inf-part pad10 bgbai mar-bot">
+        <div class="finll-form-bar box-bar">
+            <div class="order-pay cell widauto corh">订单编号：{$details.orderNo}</div>
+        </div>
+        <div class="finll-form-bar box-bar">
+            <div class="order-pay cell widauto corh">支付方式：<if condition="$details['payType'] eq 1">微信支付<else/>余额支付</if></div>
+        </div>
+        <div class="finll-form-bar box-bar">
+            <div class="order-pay cell widauto corh">订单状态：<if condition="$details['pintuanStatus'] eq 1">拼团中<elseif condition="$details['pintuanStatus'] eq 2"/>已成团<elseif condition="$details['pintuanStatus'] eq -1"/>未成团</if></div>
+        </div>
+        <div class="finll-form-bar box-bar">
+            <div class="order-pay cell widauto corh">下单时间：{$details.createTime}</div>
+        </div>
+        <if condition="$details['pintuanStatus'] eq 2">
+        <div class="finll-form-bar box-bar">
+            <div class="order-pay cell widauto corh">成团时间：{$details.succpintuan}</div>
+        </div>
+        </if>
+    </div>
+    <if condition="$details['pintuanStatus'] eq 2">
+    <div class="other-inf-part pad10 bgbai">
+        <div class="finll-form-bar box-bar">
+            <div class="order-pay cell widauto corh">物流公司：@#$中通快递....</div>
+        </div>
+        <div class="finll-form-bar box-bar">
+            <div class="order-pay cell widauto corh">运单编号：@#$ZT2016050600325698....</div>
+        </div>
+        <div class="finll-form-bar box-bar">
+            <div class="order-pay cell widauto corh">发货时间：@#$2016-09-13 13:15:32....</div>
+        </div>
+    </div>
+    </if>
+
+</div>
+<!--主体部分end-->
+</body>
+<!--首页模块自定义js-->
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+</html>

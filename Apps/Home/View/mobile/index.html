@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>{$CONF['mallTitle']}</title>
+	<!--字体图标-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+	<!--公共样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+	<!--自定义样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+	<!--轮播-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/trundle.css">
+	<!--jquery库有此轮播的需要引用低版本的库-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+	<!--rem自适应-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+	<!--需要放在头部，否则倒计时不执行-->
+	<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap pad-bot">
+	<!--轮播begin 建议上传图片最佳比例2:1-->
+	<div class="main_visual">
+		<div class="flicking_con">
+			<volist name=":getAds(1)" id="vo" key="k">
+				<a href="#">{$k}</a>
+			</volist>
+		</div>
+		<div class="main_image">
+			<ul>
+				<volist name=":getAds(1)" id="vo" key="k">
+					<li><span class="img_2"><a href="{$vo['adURL']}"><img src="__ROOT__/{$vo['adFile']}"  title="{$vo['adName']}"></a></span></li>
+				</volist>
+			</ul>
+			<a href="javascript:;" id="btn_prev"></a>
+			<a href="javascript:;" id="btn_next"></a>
+		</div>
+	</div>
+	<!--轮播end-->
+	<!--图文菜单(秒杀，拼团，众筹，收益)begin-->
+	<div class="graph-text-menu">
+		<ul>
+			<li class="seckill" onclick="window.location.href='{:U('Home/Index/msIndex')}'" style="background-image:url(__ROOT__/Apps/Home/View/mobile/images/ms.jpg)"></li>
+			<li class="fightgroups" onclick="window.location.href='{:U('Home/Index/ptIndex')}'" style="background-image:url(__ROOT__/Apps/Home/View/mobile/images/pt.jpg)"></li>
+			<li class="crowd" onclick="window.location.href='./zc/wap/index.php?ctl=deals&state=3'" style="background-image:url(__ROOT__/Apps/Home/View/mobile/images/zc.jpg)"></li>
+			<li class="income" onclick="window.location.href='{:U('Home/Users/profit')}'" style="background-image:url(__ROOT__/Apps/Home/View/mobile/images/sy.jpg)"></li>
+		</ul>
+	</div>
+	<!--图文菜单end-->
+	<!--特品汇和凡品汇begin-->
+	<div class="special-offer">
+		<ul class="box-bar">
+			<li class="box-bar-list tp" onclick="window.location.href='{:U('Home/Goods/getGoodsList',array('c2Id'=>'61'))}'" style="background-image:url(__ROOT__/Apps/Home/View/mobile/images/tp.jpg)"></li>
+			<li class="box-bar-list fp" onclick="window.location.href='{:U('Home/Goods/getGoodsList',array('c2Id'=>'62'))}'" style="background-image:url(__ROOT__/Apps/Home/View/mobile/images/fp.jpg)"></li>
+		</ul>
+	</div>
+	<!--特品汇和凡品汇end-->
+	<!--限时秒杀标题begin-->
+	<div class="seckill-hd hdbar" onclick="window.location.href='{:U('Home/Index/msIndex')}'">
+		<input type="hidden" id="date" value="{$date}">
+		<div class="time-item">
+			<strong id="t_h">0</strong>
+			<span class="colon">:</span>
+			<strong id="t_m">0</strong>
+			<span class="colon">:</span>
+			<strong id="t_s">0</strong>
+		</div><!--倒计时模块-->
+	</div>
+	<!--限时秒杀标题end-->
+	<!--秒杀商品展示begin-->
+	<div class="pro-wrap">
+		<!--商品循环部分(建议图片200*190)begin-->
+		<volist name="goodsMs" id="vo" key="k">
+		<div class="pro-list" onClick="window.location.href='{:U('Home/Goods/getGoodsDetails', array(goodsId=>$vo['goodsId']))}'">
+			<div class="pro-img-pannel table-wrap">
+				<img src="{$vo.goodsThums}" width="200" height="190">
+			</div>
+			<div class="img-title-bar">
+				{$vo.goodsName}
+			</div>
+			<div class="img-price">
+				<span class="discount-price">￥{$vo.shopPrice}</span>
+				<del class="cost-price">￥{$vo.marketPrice}</del>
+			</div>
+		</div>
+		</volist>
+		<!--商品循环部分end-->
+
+	</div>
+	<!--秒杀商品展示end-->
+	<!--拼团标题begin-->
+	<div class="seckill-hd  groups-hd" onclick="window.location.href='{:U('Home/Index/ptIndex')}'">
+	</div>
+	<!--拼团标题end-->
+	<!--拼团商品展示begin-->
+	<div class="pro-wrap">
+		<!--商品循环部分begin-->
+		<volist name="goodsPt" id="vo" key="k">
+		<div class="pro-list" onClick="window.location.href='{:U('Home/Goods/getGoodsDetailsPt', array(goodsId=>$vo['goodsId']))}'">
+			<div class="pro-img-pannel table-wrap">
+				<img src="{$vo.goodsThums}" width="200" height="190">
+			</div>
+			<div class="img-title-bar">
+				{$vo.goodsName}
+			</div>
+			<div class="img-price">
+				<span class="discount-price">￥{$vo.shopPrice}</span>
+				<del class="cost-price">￥{$vo.marketPrice}</del>
+				<span class="group-num">{$vo.ptrs}人团</span>
+			</div>
+		</div>
+		</volist>
+		<!--商品循环部分end-->
+	</div>
+	<!--拼团商品展示end-->
+	<!--广告位建议上传图片（750*250）begin-->
+	<div class="adsense-panel table-wrap">
+		<img src="__ROOT__/Apps/Home/View/mobile/images/sy_1banner_02.jpg" alt="">
+	</div>
+	<!--广告位end-->
+	<!--众筹标题begin-->
+	<div class="seckill-hd  crowd-funding-hd" onclick="window.location.href='./zc/wap/index.php?ctl=deals&state=3'">
+	</div>
+	<!--众筹标题end-->
+	<!--众筹商品展示begin-->
+	<div class="pro-wrap">
+		<!--商品循环部分(建议图片200*190)begin-->
+		<volist name='goodsZc' id="vo">
+		<div class="pro-list" onclick="window.location.href='./zc/wap/index.php?ctl=deal&id={$vo.id}'">
+			<div class="pro-img-pannel table-wrap">
+				<img src="./zc/{$vo.image}" width="200" height="190">
+			</div>
+			<div class="img-title-bar">
+				{$vo.name}
+			</div>
+			<div class="img-title-bar">
+				<div class="ui-progressbar">
+					<div class="ui-progressbar-value" style="width:{$vo['support_amount']/$vo['limit_price']*100}%;">
+					</div>
+				</div>
+			</div>
+			<div class="img-price crowd-img-price">
+				<span class="price-tit">已筹：</span>
+				<span class="price-num">￥{$vo.support_amount}</span>
+				<span class="group-num">{$vo['support_amount']/$vo['limit_price']*100}%</span>
+			</div>
+		</div>
+		</volist>
+		
+		<!--商品循环部分end-->
+	</div>
+	<!--众筹商品展示end-->
+</div>
+<!--主体部分end-->
+<!--固定的底部begin-->
+<include file="./Apps/Home/View/mobile/footer_mobile.html" />
+<!--固定的底部end-->
+</body>
+
+<!--轮播begin-->
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/trundle.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/jquery.event.drag-1.5.min.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/jquery.touchSlider.js"></script>
+<!--轮播end-->
+
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+<script type="text/javascript">
+	var isDevelop = '<php>echo C("isDevelop");</php>';
+	mobile = (/mmp|symbian|smartphone|midp|wap|phone|xoom|iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
+	if(isDevelop != 1){
+        if (!mobile) {
+            WST.msg("请使用手机打开本商城", {icon: 5});
+            setTimeout('window.history.go(-1);',2000);
+        }
+	}
+	setInterval(GetRTime,0);
+	function GetRTime(){
+	    var nextDay = GetDateStr(1);
+		var da = $("#date").val(); //nextDay; // '2017-2-23 10:16:30';
+		var EndTime= new Date(da);
+		var NowTime = new Date();
+		var t =EndTime.getTime() - NowTime.getTime();
+		var d=0;
+		var h=0;
+		var m=0;
+		var s=0;
+		if(t>=0){
+			d=Math.floor(t/1000/60/60/24);
+			h=Math.floor(t/1000/60/60%24);
+			m=Math.floor(t/1000/60%60);
+			s=Math.floor(t/1000%60);
+		}
+
+		// document.getElementById("t_d").innerHTML = d + "天";
+		document.getElementById("t_h").innerHTML = h;
+		document.getElementById("t_m").innerHTML = m;
+		document.getElementById("t_s").innerHTML = s;
+	}
+
+    function GetDateStr(AddDayCount) {
+        var dd = new Date();
+        dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+        var y = dd.getFullYear();
+        var m = dd.getMonth()+1;//获取当前月份的日期
+        var d = dd.getDate();
+        return y+"-"+m+"-"+d+" 00:00:00";
+    }
+
+</script>
+
+</html>

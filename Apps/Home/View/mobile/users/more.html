@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>更多</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/layer1.js"></script>
+    <script src="__PUBLIC__/js/common.js"></script>
+    <!--<script src="__ROOT__/Apps/Home/View/mobile/js/common.js"></script>-->
+    <script src="__ROOT__/Apps/Home/View/mobile/js/userlogin.js"></script>
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap">
+    <a href="{:U('Home/Users/feedback')}">
+    <div class="single-row box-bar pad10" onclick="window.location.href='#'">
+        <div class="tit">意见反馈</div>
+        <div class="box-bar-list"></div>
+        <div class="position-jt"></div>
+    </div>
+    </a>
+    <a href="{:U('Home/Articles/lists',array('type'=>2,'from'=>1))}">
+    <div class="single-row box-bar pad10" onclick="window.location.href='#'">
+        <div class="tit">常见问题</div>
+        <div class="box-bar-list"></div>
+        <div class="position-jt"></div>
+    </div></a>
+    <a href="{:U('Home/Articles/lists',array('con'=>4))}">
+    <div class="single-row box-bar pad10" onclick="window.location.href='#'">
+        <div class="tit">关于我们</div>
+        <div class="box-bar-list"></div>
+        <div class="position-jt"></div>
+    </div></a>
+    <div class="submit-bar">
+        <button type="button" class="submit-btn sel" onclick="logout();">退出</button>
+    </div>
+</div>
+<!--主体部分end-->
+<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>注册</title>
+	<!--字体图标-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+	<!--公共样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+	<!--自定义样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+	<!--jquery库-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+	<!--rem自适应-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/layer1.js"></script>
+
+
+
+
+	<script src="__PUBLIC__/js/jquery.min.js"></script>
+	<script src="__PUBLIC__/plugins/lazyload/jquery.lazyload.min.js?v=1.9.1"></script>
+	<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+	<script type="text/javascript">
+        var WST = ThinkPHP = window.Think = {
+            "ROOT"   : "__ROOT__",
+            "APP"    : "__APP__",
+            "PUBLIC" : "__PUBLIC__",
+            "DEEP"   : "{:C('URL_PATHINFO_DEPR')}",
+            "MODEL"  : ["{:C('URL_MODEL')}", "{:C('URL_CASE_INSENSITIVE')}", "{:C('URL_HTML_SUFFIX')}"],
+            "VAR"    : ["{:C('VAR_MODULE')}", "{:C('VAR_CONTROLLER')}", "{:C('VAR_ACTION')}"],
+            "DOMAIN" : "{:WSTDomain()}",
+            "CITY_ID" : "{$currArea['areaId']}",
+            "CITY_NAME" : "{$currArea['areaName']}",
+            "DEFAULT_IMG": "{:WSTDomain()}/{$CONF['goodsImg']}",
+            "MALL_NAME" : "{$CONF['mallName']}",
+            "SMS_VERFY"  : "{$CONF['smsVerfy']}",
+            "PHONE_VERFY"  : "{$CONF['phoneVerfy']}",
+            "IS_LOGIN" :"{$WST_IS_LOGIN}"
+        }
+        $(function() {
+            $('.lazyImg').lazyload({ effect: "fadeIn",failurelimit : 10,threshold: 200,placeholder:WST.DEFAULT_IMG});
+        });
+	</script>
+	<script src="__PUBLIC__/js/think.js"></script>
+</head>
+
+<body class="bgbody">
+<!--主体部分begin-->
+<div class="wrap">
+	<div class="reg-top"></div>
+	<form class="reg-form" id="register" autocomplete="off">
+		<input name="regType" id="regType" value="person" type="hidden"/>
+		<input name="nameType" id="nameType" value="3"  type="hidden" />
+		<!--单行begin-->
+		<div class="field-bar">
+			<div class="label">手机号</div>
+			<div class="field-control">
+				<input type="text" id="loginName" name="loginName" class="input-required" maxlength="11" autocomplete="off" placeholder="请输入11位手机号"/>
+			</div>
+		</div>
+		<!--单行end-->
+		<!--单行begin-->
+		<div class="field-bar">
+			<div class="label">验证码</div>
+			<div class="field-control">
+				<input type="text" name="mobileCode" id="mobileCode" class="input-required verifi-code-input" maxlength="4" autocomplete="off" placeholder="请输入短信验证码"/>
+				<input type="button" class="verifi-code-btn sel" onclick="settime(this)" id="sendMobileCode" value="发送验证码">
+			</div><!-- getVerifyCode()-->
+		</div>
+		<!--单行end-->
+		<!--单行begin-->
+		<div class="field-bar">
+			<div class="label">密码</div>
+			<div class="field-control">
+				<input type="password" id="loginPwd" name="loginPwd" class="input-required" autocomplete="off" placeholder="请输入6-16位数字或字母"/>
+			</div>
+		</div>
+		<!--单行end-->
+		<div class="submit-bar">
+			<button type="button" class="submit-btn sel" onclick="check()">注册</button>
+		</div>
+		<div class="reginf">
+			<i class="iconfont sel">&#xe602;</i>
+			<p>我已阅读并同意<a class="protocol" href="/index.php?m=Home&c=Articles&a=index&articleId=1">凡品云商商城用户协议</a></p>
+		</div>
+	</form>
+</div>
+<!--主体部分end-->
+</body>
+<!--登陆模块所用js-->
+<script src="__ROOT__/Apps/Home/View/mobile/scripts/custom-log.js"></script>
+<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+<script src="__PUBLIC__/plugins/formValidator/formValidator-4.1.3.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__ROOT__/Apps/Home/View/mobile/js/common.js"></script>
+<script src="__ROOT__/Apps/Home/View/mobile/js/regist.js"></script>
+<style>
+	.layui-layer-btn a{background:#e23c3d;}
+</style>
+</html>

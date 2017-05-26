@@ -1,0 +1,3 @@
+<?php
+//000031536000a:2:{i:0;a:5:{s:12:"friendlinkId";s:1:"1";s:13:"friendlinkIco";s:44:"Upload/friendlinks/2016-10/581314f9ed652.jpg";s:14:"friendlinkName";s:12:"华腾科技";s:13:"friendlinkUrl";s:22:"http://www.sjzhtkj.com";s:14:"friendlinkSort";s:1:"0";}i:1;a:5:{s:12:"friendlinkId";s:1:"3";s:13:"friendlinkIco";s:44:"Upload/friendlinks/2017-02/58ae3183ed43f.jpg";s:14:"friendlinkName";s:6:"百度";s:13:"friendlinkUrl";s:20:"http://www.baidu.com";s:14:"friendlinkSort";s:1:"0";}}
+?>

@@ -1,0 +1,68 @@
+<extend name="./Apps/Home/View/default/shops/layout.html" />
+<block name="content">
+<script>
+    $(function () {
+        $.formValidator.initConfig({
+            theme:'Default',mode:'AutoTip',formID:"myform",debug:true,submitOnce:true,onSuccess:function(){
+                toPostTrans();
+                return false;
+            },onError:function(msg){
+            }});
+        $("#kuaidi").formValidator({onFocus:"请选择快递公司！"}).inputValidator({min:1,onError: "请选择快递公司！"});
+        $("#kuaidino").formValidator({onShow:"",onFocus:"请填写正确的快递单号！",onCorrect:"输入正确"}).inputValidator({min:6,max:20,onError:"请填写正确的快递单号！"});
+    });
+
+    function toPostTrans(){
+        var params = {};
+        params.kuaidi = $('#kuaidi').val();
+        params.kuaidino = $('#kuaidino').val();
+        params.orderid = $('#orderid').val();
+        $.post(Think.U('Home/Orders/toPostTransport'),params,function(data){
+            var json = WST.toJson(data);
+            console.info(json);
+            if(json.status=='1'){
+                WST.msg('发货成功!', {icon: 1}, function(){
+                    window.location.href="/index.php?m=Home&c=Orders&a=toShopOrdersList";
+                });
+            }else{
+                WST.msg('发货失败!', {icon: 5});
+            }
+        });
+    }
+
+</script>
+    <div class="wst-body">
+        <div class='wst-page-header'>卖家中心 > 发货配送</div>
+        <div class='wst-page-content'>
+            <form name="myform" method="post" id="myform" autocomplete="off">
+                <input type="hidden" name="orderid" id="orderid" value="{$orderid}">
+                <table class="table table-hover table-striped table-bordered wst-form">
+                    <tr>
+                        <th align='right'>快递公司 <font color='red'>*</font>： </th>
+                        <td>
+                            <select id='kuaidi' style="border-radius: 4px; margin:3px;">
+                                <option value=''>请选择</option>
+                                <volist name="kuaidiList" id="vo">
+                                    <option value='{$vo['id']}'>{$vo['name']}</option>
+                                </volist>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th align='right'>快递单号 <font color='red'>*</font>：</th>
+                        <td>
+                            <input type='type' id='kuaidino' name='kuaidino' style='width:250px;' maxLength='16'/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan='2' style='padding-left:250px;'>
+                            <button class='wst-btn-query' type="submit">发&nbsp;货</button>
+                            <button class='wst-btn-query' type="reset">重&nbsp;置</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</block>

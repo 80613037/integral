@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+    <head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+        <title>商品评价</title>
+        <link rel="stylesheet" href="__ROOT__/Apps/Home/View/default/css/common.css" />
+        <link rel="stylesheet" href="__ROOT__/Apps/Home/View/default/css/user.css">
+   		<link rel="stylesheet" type="text/css" href="__PUBLIC__/plugins/webuploader/webuploader.css" />
+		<script src="__PUBLIC__/js/jquery.min.js"></script>
+		<!--字体图标-->
+		<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+		<!--公共样式-->
+		<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+		<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+		<!--自定义样式-->
+		<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+		<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+		<!--jquery库有此轮播的需要引用低版本的库-->
+		<script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+		<!--rem自适应-->
+		<script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+		<script type="text/javascript">
+	    var WST = ThinkPHP = window.Think = {
+	            "ROOT"   : "__ROOT__",
+	            "APP"    : "__APP__",
+	            "PUBLIC" : "__PUBLIC__",
+	            "DEEP"   : "{:C('URL_PATHINFO_DEPR')}",
+	            "MODEL"  : ["{:C('URL_MODEL')}", "{:C('URL_CASE_INSENSITIVE')}", "{:C('URL_HTML_SUFFIX')}"],
+	            "VAR"    : ["{:C('VAR_MODULE')}", "{:C('VAR_CONTROLLER')}", "{:C('VAR_ACTION')}"],
+	            "DOMAIN" : "{:WSTDomain()}",
+	    }
+	    </script>
+	    <script src="__PUBLIC__/js/think.js"></script>
+    <style type="text/css">
+		.yp{
+			height: 30px;
+			width: 60px;
+			border: solid 1px #e5e5e5;
+			color: #999;
+			background: #fff;
+			border-radius: 2px;
+			cursor: pointer;
+			margin: 4px;
+			line-height: 30px;
+			text-align: center;
+		}
+	</style>
+	</head>
+    
+    <body style="background-color:#f5f5f5;">
+	<volist name="orderInfo['goodsList']" id="goods" key='key1'>
+
+		<input type="hidden" name="score" value="5" />
+        <div class="wrap pad-bot mar-top">
+			<!--一条订单begin-->
+			<ul class="hotel-ul mar-bot">
+				<li class="hotel-list pad10 bgwid">
+					<div class="tw-panel box-bar mar-b">
+						<div class="hotel-pic-box cell">
+							<div class="hotel-pic" style="background-image:url(__ROOT__/{$goods['goodsThums']});"></div>
+						</div>
+						<div class="hotel-inf box-bar-list">
+							<h3>{$goods["goodsName"]}</h3>
+							<div class="hotel-other">
+								<b class="cor fl">￥{$goods["ogoodsPrice"]}</b>
+								<b class="fr">X{$goods["ogoodsNums"]}</b>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<!--一条订单end-->
+			<!--评价begin-->
+			<if condition='$goods["gaId"] eq ""'>
+			<div class="evaluate-box tuikuan-box">
+				<p class="pad-lr hd"><span>评价</span></p>
+				<div class="pad-lr mar-bot">
+					<textarea class="text-fill-per wantsay" name="{$goods['goodsId']}_{$goods['goodsAttrId']}_content" id="{$goods['goodsId']}_{$goods['goodsAttrId']}_content" maxlength="50" placeholder="请输入您的评价内容"></textarea>
+				</div>
+				<div id='picBox-{$goods['goodsId']}'>
+					<p class="pad-lr hd" id="filePicker-{$goods['goodsId']}" style="line-height:0.8rem;" ><span>晒图（最多可上传5张）</span></p>
+
+					<div class="box-bar pad-lr mar-bot"></div>
+				</div>
+				<div style="float:right; margin-right:10px;">
+					<a class="btn-submit" href="javascript:;" onclick="addGoodsAppraises({$orderInfo['order']['shopId']},{$goods['goodsId']},'{$goods['goodsAttrId']}',{$orderInfo['order']['orderId']})">
+						<button class='wst-btn-query'>评价</button>
+					</a>
+				</div>
+			<else/><div style="float:right; margin-right:10px;" class="yp">已评价</div></if></div>
+			<!--评价end-->
+		</div>
+	</volist>
+
+		<!--主体部分end-->
+		<!--固定的底部begin-->
+		<!--<footer class="footer">-->
+			<!--<div class="detail-footer">-->
+				<!--<div class="buynow foot-block1 corbai" onclick="addGoodsAppraises({$orderInfo['order']['shopId']}, {$goods['goodsId']}, '{$goods['goodsAttrId']}', {$orderInfo['order']['orderId']})">-->
+					<!--提交-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</footer>-->
+		<!--固定的底部end-->
+	</body>
+    <script type="text/javascript" src="__PUBLIC__/plugins/webuploader/webuploader.js"></script>
+    <script src="__PUBLIC__/js/common.js"></script>
+	<!--<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>-->
+	 <script src="__ROOT__/Apps/Home/View/mobile/scripts/layer1.js"></script>
+	 <script src="__ROOT__/Apps/Home/View/mobile/js/usercom.js"></script>
+	 <script type="text/javascript" src="__PUBLIC__/plugins/raty/jquery.raty.min.js"></script>
+    	 <script type="text/javascript">
+    	 	$(function(){
+			   appraiseInit({$goods['goodsId']});
+		   });
+
+
+    	 	var shopId = "{$orderInfo['shopId']}";
+	   		//添加商品评价
+			
+	   		$(function(){
+	   			var options = {
+	   					hints         : ['很不满意', '不满意', '一般', '满意', '非常满意'],
+	   					width:200,
+	   					targetKeep: true,
+	   					starHalf:'__PUBLIC__/plugins/raty/img/star-half-big.png',
+	   					starOff:'__PUBLIC__/plugins/raty/img/star-off-big.png',
+	   					starOn:'__PUBLIC__/plugins/raty/img/star-on-big.png',
+	   					cancelOff: '__PUBLIC__/plugins/raty/img/cancel-off-big.png',
+	   				    cancelOn: '__PUBLIC__/plugins/raty/img/cancel-on-big.png'
+	   		    }
+	   			<volist name="orderInfo['goodsList']" id="goods" key='key1'>
+	   			options.target='#{$goods['goodsId']}_{$goods['goodsAttrId']}_goodsScore_hint';
+	   			$('.{$goods['goodsId']}_{$goods['goodsAttrId']}_goodsScore').raty(options);
+	   			options.target='#{$goods['goodsId']}_{$goods['goodsAttrId']}_timeScore_hint';
+	   			$('.{$goods['goodsId']}_{$goods['goodsAttrId']}_timeScore').raty(options);
+	   			options.target='#{$goods['goodsId']}_{$goods['goodsAttrId']}_serviceScore_hint';
+	   			$('.{$goods['goodsId']}_{$goods['goodsAttrId']}_serviceScore').raty(options);
+	   			</volist>
+	   		});
+	   		
+		</script>
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+	<!--图片上传-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/upimg1.js"></script>
+</html>

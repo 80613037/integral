@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>个人中心</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/wode.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+</head>
+<body style="background:#f4f6f9; padding-bottom:1.5rem;">
+<div class="wode">
+    <div class="wode-hd">
+        <div class="shdz">
+            <if condition="$uinfo neq ''">
+            <a href="{:U('Home/UserAddress/queryByPage',array('from'=>'user'))}">收货地址></a>
+            </if>
+        </div>
+        <div class="wode-hdimg">
+            <div class="tx1">
+                <if condition="$uinfo['userPhoto'] neq ''">
+                    <a href="{:U('Home/Users/toEdit')}">
+                    <img src="__ROOT__/{$uinfo.userPhoto}" >
+                    </a>
+                <else/>
+                    <a href="{:U('Home/Users/toEdit')}">
+                    <img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_1mrtx.png" alt=""></a>
+                </if>
+
+            </div>
+        </div>
+        <div class="qdl">
+            <p>{$uinfo.userName|default='<a href="/index.php?m=Home&c=Users&a=login&from=user" style="color:#fff">未登录</a>'}</p>
+        </div>
+        <div class="accut">
+            <ul>
+                <li>
+                    <a href="{:U('Home/Users/getMoneyList')}">
+                    <span style="color: #fff;">{$uinfo.userMoney|default='0'}</span>
+                    <p style="color: #fff;">账户余额</p></a>
+                </li>
+                <li>
+                    <a href="{:U('Home/Users/toScoreList')}">
+                    <span style="color: #fff;">{$uinfo.userScore|default='0'}</span>
+                    <p style="color: #fff;">我的积分</p></a>
+                </li>
+                <li>
+                    <a href="{:U('Home/Users/signGold')}">
+                    <span class="qd-jb"><img src="__ROOT__/Apps/Home/View/mobile/images/wode/qdjb.png" alt=""></span>
+                    <p style="color: #fff;">签到得金币</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="my-order">
+        <div class="wddd">
+            <p><a href="#">我的订单<span><img src="__ROOT__/Apps/Home/View/mobile/images/wode/yjt-hui.png" alt=""></span></a></p>
+        </div>
+    </div>
+    <div class="dpending">
+        <ul>
+            <li>
+                <a href="{:U('Home/Orders/queryPayByPage')}">
+                    <span class=""><img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_1dzf.png" alt=""></span>
+                    <p>待支付</p>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Home/Orders/queryDeliveryByPage')}">
+                    <span class=""><img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_1dfh.png" alt=""></span>
+                    <p>待发货</p>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Home/Orders/queryReceiveByPage')}">
+                    <span class=""><img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_1dsh.png" alt=""></span>
+                    <p>待收货</p>
+                </a>
+
+            </li>
+            <li>
+                <a href="{:U('Home/Orders/queryAppraiseByPage')}">
+                    <span class=""><img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_1dpj.png" alt=""></span>
+                    <p>待评价</p>
+                </a>
+
+            </li>
+            <li>
+                <a href="{:U('Home/Orders/queryRefundByPage')}">
+                    <span class=""><img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_1tk.png" alt=""></span>
+                    <p>退款/售后</p>
+                </a>
+
+            </li>
+        </ul>
+    </div>
+    <div class="wd-list">
+        <ul>
+            <li>
+                <a href="{:U('Home/Users/myPintuan')}">
+                <span><img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_1wdt.png" alt=""></span>
+                    <p>我的团</p></a>
+            </li>
+            <li>
+                <a href="/zc/wap/index.php?ctl=account">
+                <span><img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_1wdzc.png" alt=""></span>
+                    <p>我的众筹</p></a>
+            </li>
+            <li>
+                <a href="{:U('Home/Users/profit')}">
+                <span><img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_1wdsy.png" alt=""></span>
+                <p>我的收益</p></a>
+            </li>
+            <li>
+                <a href="{:U('Home/Users/userCoup')}">
+                <span><img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_1wddjq.png" alt=""></span>
+                <p>我的代金券</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="wd-inform">
+        <ul>
+            <a href="{:U('Home/Articles/lists',array('type'=>1))}">
+            <li>
+                <i class="wdxx-ico"></i>我的消息
+                <span><img src="__ROOT__/Apps/Home/View/mobile/images/wode/yjt-hui.png" alt=""></span>
+            </li>
+            </a>
+            <li class="eject-btn">
+                <i class="share-ico"></i>分享
+                <span><img src="__ROOT__/Apps/Home/View/mobile/images/wode/yjt-hui.png" alt=""></span>
+            </li>
+            <a href="{:U('Home/Users/more')}">
+            <li>
+                <i class="more-ico"></i>更多
+                <span><img src="__ROOT__/Apps/Home/View/mobile/images/wode/yjt-hui.png" alt=""></span>
+            </li>
+            </a>
+        </ul>
+    </div>
+</div>
+
+
+<!--固定的底部begin-->
+<include file="./Apps/Home/View/mobile/footer_mobile.html" />
+<!--固定的底部end-->
+<!--弹框begin-->
+<div class="prompt-wrap eje-black-wrap">
+    <div class="share-inf-box">
+        <p class="invita dt-invita">点击右上角按钮，发送给朋友或朋友圈</p>
+    </div>
+    <div class="jt-nav"></div>
+</div>
+<!--弹框end-->
+</body>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+<script>
+    // 签到
+    $('.sign_in').click(function() {
+        var sign=$('.signV').val();
+        if (0) {
+            window.location = '__APP__/user/login.html';
+        } else {
+            $.ajax({
+                url : '/index.php?m=Home&c=Orders&a=sign',
+                dataType : 'text',
+                success : function(res) {
+                    if (res.match(/green/)) {
+                        $('.sign_in').text('已签到 +5分');
+                    }
+                    //showMsg(res);
+                    alert(res);
+                }
+            })
+        }
+    });
+</script>
+</html>

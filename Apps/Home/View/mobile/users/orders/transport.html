@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>商品订单</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap">
+    <div class="hotel-wrap hotel-wrapbgnone lands-pro-wrap on">
+        <!--一条订单begin-->
+        <ul class="hotel-ul mar-bot">
+            <li class="hotel-list pad10">
+                <div class="tw-panel box-bar mar-b">
+                    <div class="hotel-pic-box cell">
+                        <div class="hotel-pic" style="background-image:url({$traninfo.goodsThums});"></div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!--一条订单end-->
+        <div class="finll-form-bar box-bar pad-lr">
+            <div class="order-num box-bar-list">物流公司：</div>
+            <div class="order-pay cell widauto">{$traninfo.name}</div>
+        </div>
+        <div class="finll-form-bar box-bar pad-lr">
+            <div class="order-num box-bar-list">运单编号：</div>
+            <div class="order-pay cell widauto">{$traninfo.transno}</div>
+        </div>
+        <div class="finll-form-bar box-bar pad-lr">
+            <div class="order-num box-bar-list">发货时间：</div>
+            <div class="order-pay cell widauto">{$traninfo.ctime}</div>
+        </div>
+    </div>
+</div>
+<!--主体部分end-->
+</body>
+</html>

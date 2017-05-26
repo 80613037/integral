@@ -1,0 +1,23 @@
+<footer class="footer">
+    <ul>
+
+        <if condition="$s eq 'mall'"><li class="mall on"><else/><li class="mall"></if>
+            <a href="{:U('Home/Index/mall/')}">
+                <span></span>
+                <p>商城</p>
+            </a>
+        </li>
+        <if condition="$s eq 'cart'"><li class="cart on"><else/><li class="cart"></if>
+            <a href="{:U('Home/Cart/getCartInfo')}">
+                <span></span>
+                <p>购物车</p>
+            </a>
+        </li>
+        <if condition="$s eq 'user'"><li class="user on"><else/><li class="user"></if>
+            <a href="{:U('Home/Users/index')}">
+                <span></span>
+                <p>我的</p>
+            </a>
+        </li>
+    </ul>
+</footer>

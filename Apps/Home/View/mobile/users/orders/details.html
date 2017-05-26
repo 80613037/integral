@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>商品订单</title>
+	<!--字体图标-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+	<!--公共样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+	<!--自定义样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+	<!--jquery库有此轮播的需要引用低版本的库-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+	<!--rem自适应-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+	<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+	<script src="__ROOT__/Apps/Home/View/mobile/js/orders/orders.js"></script>
+</head>
+<body style="background: #f4f6f9;">
+<!--主体部分begin-->
+<div class="wrap pad-bot">
+	<!--收货地址begin-->
+	<div class="line-bar box-bar">
+		<div class="position-icon"></div>
+		<div class="position-inf">
+			<div class="per-inf">
+				<span class="name">收货人：{$orderInfo["order"]["userName"]}</span>
+				<span class="tel">{$orderInfo["order"]["userPhone"]} <if condition='$orderInfo["order"]["userTel"] neq ""'>| {$orderInfo["order"]["userTel"]}</if></span>
+			</div>
+			<div class="dt-addr">
+				{$orderInfo["order"]["userAddress"]}
+			</div>
+		</div>
+		<!--<div class="position-jt"></div>-->
+	</div>
+	<!--收货地址end-->
+	<div class="hotel-wrap hotel-wrapbgnone lands-pro-wrap on">
+		<!--一条订单begin-->
+		<ul class="hotel-ul mar-bot">
+			<volist name="orderInfo['goodsList']" id="goods" key='key1'>
+			<li class="hotel-list pad10">
+				<div class="tw-panel box-bar mar-b">
+					<div class="hotel-pic-box cell">
+						<div class="hotel-pic" style="background-image:url(__ROOT__/{$goods['goodsThums']});"></div>
+					</div>
+					<div class="hotel-inf box-bar-list">
+						<h3>{$goods["goodsName"]}</h3>
+						<div class="hotel-other">
+							<b class="cor fl">￥{$goods["shopPrice"]}</b>
+							<b class="fr">X{$goods["goodsNums"]}</b>
+						</div>
+					</div>
+				</div>
+			</li>
+			</volist>
+		</ul>
+		<!--一条订单end-->
+		<div class="finll-form-bar box-bar pad-lr">
+			<div class="order-num box-bar-list">订单号：</div>
+			<div class="order-pay cell widauto">{$orderInfo["order"]["orderNo"]}</div>
+		</div>
+		<!--<div class="finll-form-bar box-bar pad-lr">
+			<div class="order-num box-bar-list">支付方式：</div>
+			<div class="order-pay cell widauto">微信</div>
+		</div>-->
+		<div class="finll-form-bar box-bar pad-lr">
+			<div class="order-num box-bar-list">订单状态：</div>
+			<div class="order-pay cell widauto">
+				<if condition="$orderInfo['order']['orderStatus'] eq -2">未付款
+				<elseif condition="($orderInfo['order']['orderStatus'] eq 0) OR ($orderInfo['order']['orderStatus'] eq 1) OR ($orderInfo['order']['orderStatus'] eq 2)"/>
+					待发货
+				<elseif condition="$orderInfo['order']['orderStatus'] eq 3"/>
+					待收货
+				<elseif condition="$orderInfo['order']['orderStatus'] eq 4"/>
+					待评价
+				<elseif condition="$orderInfo['order']['orderStatus'] eq 5"/>
+					退款
+				<else/>
+					其它
+				</if>
+			</div>
+		</div>
+		<div class="finll-form-bar box-bar pad-lr">
+			<div class="order-num box-bar-list">需要付款：</div>
+			<div class="order-pay cell widauto cor">￥{$orderInfo["order"]["realTotalMoney"]}（含运费￥{$orderInfo["order"]["deliverMoney"]}<if condition="$orderInfo['order']['coupId'] neq 0">，已减免优惠券{$orderInfo['order']['jian']}</if>）</div>
+		</div>
+		<div class="finll-form-bar box-bar pad-lr">
+			<div class="order-num box-bar-list">下单时间：</div>
+			<div class="order-pay cell widauto">{$orderInfo["order"]["createTime"]}</div>
+		</div>
+	</div>
+</div>
+<!--主体部分end-->
+<footer class="footer bor-t" style="display:none;">
+	<div class="finll-form-bar box-bar">
+		<div class="hastime cell">
+			<div class="zi corh">付款剩余时间</div>
+			<div class="time-item dis-inl shu">
+				<strong id="hour_show">0</strong>
+				<span>:</span>
+				<strong id="minute_show">0</strong>
+				<span>:</span>
+				<strong id="second_show">0</strong>
+			</div><!--倒计时模块-->
+		</div>
+		<div class="zf-btns box-bar-list">
+			<a href="{:U('Home/Orders/checkOrderInfo_gotopay',array('orderid'=>$order['orderId']))}"><div class="order-btn lv fr">去支付</div></a>
+			<div class="order-btn hui fr" onclick="orderCancel({$order['orderId']},-2)">取消订单</div>
+		</div>
+	</div>
+</footer>
+</body>
+</html>

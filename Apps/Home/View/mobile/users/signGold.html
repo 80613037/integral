@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>会员</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/wode.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+    <script src="__PUBLIC__/js/think.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+
+    <script src="__PUBLIC__/js/common.js"></script>
+    <script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+
+</head>
+<body style="background:#f4f6f9;">
+<label class="show_qd"></label>
+<div class="wode">
+    <div class="qiandao">
+        <div class="jbgz">
+            <a href="{:U('Home/Articles/index',array('articleId'=>3))}">
+            <img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_17gz.png" alt="">
+            <p>金币规则</p></a>
+        </div>
+        <div class="qd-img qd-ju">
+            <if condition="$sign eq 1">
+                <img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_19qdh.png"  class="sign_in">
+            <else/>
+                <img src="__ROOT__/Apps/Home/View/mobile/images/wode/wd_17qd.png"  class="sign_in">
+            </if>
+        </div>
+        <div class="qd-wz">
+            当前金币：<b style="font-size:0.48rem">{$uGold}</b>
+        </div>
+    </div>
+    <div class="zh-detail">
+        <h3>账户明细</h3>
+        <span></span>
+        <ul>
+            <volist name="uGoldinfo" id="uGinfo">
+            <li>
+                <p>{$uGinfo.bak}<span><if condition="$uGinfo['sc_type'] eq -1">-<else/>+</if>{$uGinfo.sc_score}</span></p>
+                <p class="date-aa">{$uGinfo.sc_time|substr=0,10}</p>
+            </li>
+            </volist>
+        </ul>
+    </div>
+</div>
+<script>
+    // 签到
+    $('.sign_in').click(function() {
+        if (0) {
+            window.location = '__APP__/user/login.html';
+        } else {
+            $.ajax({
+                url : '/index.php?m=Home&c=Users&a=sign',
+                dataType : 'json',
+                success : function(res) {
+                    if(res.code == 1){
+                        showqd('签到成功',res.signGold);
+                    }else if(res.code == 2){
+                        showqd('签到成功',res.signGold);
+                    }else if(res.code == 3){
+                        WST.msg("今天已签到！", {icon: 5});
+                    }else{
+                        WST.msg("签到失败，请稍后重试!", {icon: 5});
+                    }
+                }
+            })
+        }
+    });
+
+    function showqd(tit, gold) {
+        var html = '';
+        html += '<div class="qdcg" click="javascript:clo();">';
+        html += '<div class="succcs">';
+        html += '<img src="__ROOT__/Apps/Home/View/mobile/images/wd_18qdcg.png" >';
+        html += '<h3>'+tit+'</h3>';
+        html += '<div class="gz">';
+        html += '<br /><p>签到获得<b style="font-size:0.56rem;color:#fe4542">'+gold+'</b>金币</p><br />';
+        html += '<p>购买商品时可抵扣现金哦</p>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+        $('.show_qd').html(html);
+    }
+
+    $(".qdcg").live("click",function(){
+        $(this).hide();
+        location.reload(false);
+    });
+</script>
+</body>
+</html>

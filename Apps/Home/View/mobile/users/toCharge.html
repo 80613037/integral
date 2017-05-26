@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>充值</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+    <!--日期控件-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/mobiscroll_date.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/layer1.js"></script>
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap">
+    <div class="yue-tit">
+        账户余额：<span>{$userMoney}</span>
+    </div>
+    <!--单个分类循环begin-->
+    <div class="tcfl-row person-row box-bar pad10" onclick="window.location.href='#'">
+        <div class="per-hd cell">金额</div>
+        <div class="per-bd box-bar-list">
+            <input type="text" class="pers-inp tex-l" autocomplete="off" placeholder="请输入充值金额"/>
+        </div>
+        <div class="cate-jt cell"></div>
+    </div>
+    <!--单个分类循环end-->
+    <div class="submit-bar">
+        <div class="pad10">
+            <button type="submit" class="submit-btn sel corg" onclick="funczf()">微信支付</button>
+        </div>
+    </div>
+</div>
+<!--主体部分end-->
+</body>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+</html>

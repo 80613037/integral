@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>限时特惠</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <!--时间轴-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/seckill.css">
+    <!--上拉加载更多-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/scrollbar.css">
+    <!--jquery库无此轮播可以引用高版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+    <!--需要放在头部，否则倒计时不执行-->
+    <script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+    <!--上拉加载更多-->
+    <script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/iscroll.js"></script>
+    <script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/iscrollfresh-ms.js"></script>
+    <script src="__PUBLIC__/js/common.js"></script>
+    <script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap" id="wrapper">
+    <div id="scroller">
+        <div id="pullDown">
+            <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+        </div>
+        <div id="thelist">
+            <!--广告位 建议上传图片（750*370）begin-->
+            <div class="ad-seckill table-wrap">
+                <img src="__ROOT__/Apps/Home/View/mobile/images/sy_1banner_02.jpg">
+            </div>
+            <!--广告位 建议上传图片（750*370）end-->
+            <!-- 时间轴Swiper begin-->
+            <div class="timeaxis_warp">
+                <div class="swiper-container" id="swiper-container3">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide <if condition='($h lt 15) && ($h gt 8)'>swiper-slide-active</if>">
+                            <div class="timeaxis-item-inner">
+                                <div class="timeaxis-time">12:00</div>
+                                <div class="timeaxis-info"><if condition="($h lt 16) && ($h gt 11)">抢购中<else/>即将开始</if></div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide <if condition='($h lt 16) && ($h gt 11)'>swiper-slide-active</if>">
+                            <div class="timeaxis-item-inner">
+                                <div class="timeaxis-time">16:00</div>
+                                <div class="timeaxis-info"><if condition="($h lt 20) && ($h gt 15)">抢购中<else/>即将开始</if></div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide <if condition='($h lt 23) && ($h gt 19)'>swiper-slide-active</if>">
+                            <div class="timeaxis-item-inner">
+                                <div class="timeaxis-time">20:00</div>
+                                <div class="timeaxis-info"><if condition="($h lt 23) && ($h gt 19)">抢购中<else/>即将开始</if></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 时间轴Swiper end-->
+            <div class="swiper-slide">
+                <!--抢购内容-->
+                <div class="ani">
+                    <!--抢购标题begin-->
+                    <div class="rush-hd" style="display: none;">
+                        <div class="batch-title">抢购中，先下单先得哦</div>
+                        <div class="batch-countdown">
+                            <div class="countdown-inf">
+                                <span>距结束</span>
+                                <strong id="hour_show">0</strong>
+                                <span class="colon">:</span>
+                                <strong id="minute_show">0</strong>
+                                <span class="colon">:</span>
+                                <strong id="second_show">0</strong>
+                            </div><!--倒计时模块-->
+                        </div>
+                    </div>
+                    <!--抢购标题end-->
+                    <div class="out-item-common">
+                        <!--商品列表begin-->
+                        <volist name="goodsMs12" id="vo">
+
+                            <if condition="($h lt 16) && ($h gt 11)">
+                                <a href="{:U('Home/Goods/getGoodsDetails', array(goodsId=>$vo['goodsId']))}" class="item-common">
+                                    <else/><a href="javascript:void(0);" class="item-common"></if>
+                            <div class="item-pic item-pic-bg table-wrap">
+                                <img src="{$vo.goodsThums}">
+                            </div>
+                            <div class="item-info">
+                                <div class="item-title">{$vo.goodsName}</div>
+                                <div class="item-wrap">
+                                    <div class="item-price">
+                                        <ins class="item-newprice">￥{$vo.shopPrice}</ins>
+                                        <del class="item-oldprice">￥{$vo.marketPrice}</del>
+                                    </div>
+                                    <div class="item-status">
+                                        <if condition="($h lt 16) && ($h gt 11)">
+                                            <div class="item-action">立即抢购</div>
+                                            <else/>
+                                            <div class="item-action-grey">立即抢购</div>
+                                        </if>
+                                        <div class="status-bar-box">
+                                            已售{$vo['saleCount']/($vo['goodsStock']+$vo['saleCount'])*100|round=###,2}%
+                                            <div class="status-bar">
+                                                <div class="status-progress" style="width:{$vo['saleCount']/($vo['goodsStock']+$vo['saleCount'])*100|round=###,2}%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </volist>
+                        <!--商品列表end-->
+                    </div>
+                </div>
+                <!--抢购内容-->
+                <div class="ani">
+
+                    <!--商品列表begin-->
+                    <volist name="goodsMs16" id="vo">
+                        <if condition="($h lt 20) && ($h gt 15)">
+                            <a href="{:U('Home/Goods/getGoodsDetails', array(goodsId=>$vo['goodsId']))}" class="item-common">
+                                <else/><a href="javascript:void(0);" class="item-common"></if>
+                        <div class="item-pic item-pic-bg table-wrap">
+                            <img src="{$vo.goodsThums}">
+                        </div>
+                        <div class="item-info">
+                            <div class="item-title">{$vo.goodsName}</div>
+                            <div class="item-wrap">
+                                <div class="item-price">
+                                    <ins class="item-newprice">￥{$vo.shopPrice}</ins>
+                                    <del class="item-oldprice">￥{$vo.marketPrice}</del>
+                                </div>
+                                <div class="item-status">
+                                    <if condition="($h lt 20) && ($h gt 15)">
+                                        <div class="item-action">立即抢购</div>
+                                        <else/><div class="item-action-grey">立即抢购</div>
+                                    </if>
+                                    <div class="status-bar-box">
+                                        已售{$vo['saleCount']/($vo['goodsStock']+$vo['saleCount'])*100|round=###,2}%
+                                        <div class="status-bar">
+                                            <div class="status-progress" style="width:{$vo['saleCount']/($vo['goodsStock']+$vo['saleCount'])*100|round=###,2}%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                    </volist>
+                    <!--商品列表end-->
+                </div>
+                <div class="ani">
+                    <div class="out-item-common">
+                        <!--商品列表begin-->
+                        <volist name="goodsMs20" id="vo">
+                            <if condition="($h lt 23) && ($h gt 19)">
+                                <a href="{:U('Home/Goods/getGoodsDetails', array(goodsId=>$vo['goodsId']))}" class="item-common">
+                                    <else/><a href="javascript:void(0);" class="item-common"></if>
+                            <div class="item-pic item-pic-bg table-wrap">
+                                <img src="{$vo.goodsThums}">
+                            </div>
+                            <div class="item-info">
+                                <div class="item-title">{$vo.goodsName}</div>
+                                <div class="item-wrap">
+                                    <div class="item-price">
+                                        <ins class="item-newprice">￥{$vo.shopPrice}</ins>
+                                        <del class="item-oldprice">￥{$vo.marketPrice}</del>
+                                    </div>
+                                    <div class="item-status">
+                                        <if condition="($h lt 23) && ($h gt 19)">
+                                            <div class="item-action">立即抢购</div>
+                                            <else/>
+                                            <div class="item-action-grey">立即抢购</div>
+                                        </if>
+                                        <div class="status-bar-box">
+                                            已售{$vo['saleCount']/($vo['goodsStock']+$vo['saleCount'])*100|round=###,2}%
+                                            <div class="status-bar">
+                                                <div class="status-progress" style="width:{$vo['saleCount']/($vo['goodsStock']+$vo['saleCount'])*100|round=###,2}%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </volist>
+                        <!--商品列表end-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="pullUp">
+            <!--<span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>-->
+        </div>
+    </div>
+</div>
+<!--主体部分end-->
+</body>
+</html>

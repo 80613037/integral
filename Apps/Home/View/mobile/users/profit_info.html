@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>收益明细</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/wode.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+</head>
+<body>
+<div class="wode" >
+    <div class="qiandao">
+    </div>
+    <div class="zh-detail" style="height:14rem">
+        <ul>
+            <li style="border-top:1px solid #dbdbdb; line-height:1.333rem;">
+                <p>一级收益<span>+{$user.tjshouyi1|default=0}</span></p>
+                <!--<p class="date-aa">2016-10-20</p>-->
+            </li>
+            <li style="line-height:1.333rem;">
+                <p>二级收益<span>+{$user.tjshouyi2|default=0}</span></p>
+                <!--<p class="date-aa">2016-10-20</p>-->
+            </li>
+            <li style="line-height:1.333rem;">
+                <p>三级收益<span>+{$user.tjshouyi3|default=0}</span></p>
+                <!--<p class="date-aa">2016-10-20</p>-->
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

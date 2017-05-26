@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>收货地址</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/coment.css">
+    <!--单选按钮美化-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/single.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+    <style>
+        body{ background:#f4f6f9; }
+    </style>
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap mar-t">
+    <!--一条数据begin-->
+    <!--收货地址begin-->
+    <volist name="List" id="vo" key='i'>
+    <div class="shdz-wrap">
+        <div class="line-bar sh-line-bar box-bar bor-b" onclick="window.location.href='#'">
+            <div class="position-inf address-inf">
+                <div class="per-inf">
+                    <span class="name fl">{$vo.userName}</span>
+                    <span class="tel fr"><if condition="$vo['userPhoto'] eq ''">{$vo.userTel}<else/>{$vo.userPhoto}</if></span>
+                </div>
+                <div class="dt-addr">
+                    {$vo.areaName1}{$vo.areaName2}{$vo.areaName3}{$vo.communityName}{$vo.address}
+                </div>
+            </div>
+        </div>
+        <!--收货地址end-->
+        <div class="cart-hd sh-addr-panel box-bar mar-bot">
+            <div class="cell">
+                <input type="radio" id="radio-1-2" name="radio-1-set" class="regular-radio" <if condition="$vo['isDefault'] eq 1">checked</if> />
+                <label></label></div>
+            <div class="cell" onclick="javascript:setDefaultAddr({$vo.addressId});" >设为默认</div>
+            <div class="box-bar-list">
+                <a href="javascript:editAddr({$vo['addressId']});"><span class="bji">编辑</span></a>
+                <a href="javascript:delAddress({$vo['addressId']});"><span class="sch tishi-btn">删除</span></a>
+            </div>
+        </div>
+    </div>
+    </volist>
+    <!--一条数据end-->
+    <div class="submit-bar">
+        <div class="pad10">
+            <button type="submit" class="submit-btn sel" onclick="if(GetQueryString('from')=='order'){ window.location.href='{:U('Home/UserAddress/toEdit',array('id'=>0,'from'=>'order'))}'}else{ window.location.href='{:U('Home/UserAddress/toEdit',array('id'=>0,'from'=>'user'))}'}">新增收货地址</button>
+        </div>
+    </div>
+</div>
+<!--主体部分end-->
+<!--弹窗-->
+<!--<div class="tc-bd">-->
+    <!--<div class="tc-bd-inner">-->
+        <!--<h3>提示</h3>-->
+        <!--<p>是否删除所选地址？</p>-->
+        <!--<div class="wrap-btn box-bar">-->
+            <!--<a class="quxiao-btn box-bar-list qx-btn">取消</a>-->
+            <!--<a class="sure-btn box-bar-list confi-btn adr-confi">确定</a>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--二次弹窗-->
+</body>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+<script type="text/javascript">
+    function setDefaultAddr(id){
+        $.ajax({
+            type: "GET",
+            url : "{:U('Home/UserAddress/setDefaultAddr')}",
+            data: {'id':id},
+            dataType: "json",
+            success: function(data) {
+                if(data==1){
+                    if(GetQueryString('from')=='order'){ // 下订单页面跳转
+                        window.location.href="{:U('Home/Orders/checkOrderInfo')}";
+                    }else if(GetQueryString('from')=='user'){
+                        window.location.href="{:U('Home/Users/index')}";
+                    }else if(GetQueryString('from')=='gotopay'){
+                        window.location.href="{:U('Home/Users/index')}";
+                    }else if(GetQueryString('from')=='jforder'){
+                        window.location.href="{:U('Home/Users/topayForjf')}";
+                    }else if(GetQueryString('from')=='ptorder'){
+                        var goodsId = GetQueryString('goodsId');
+                        window.location.href="/index.php?m=Home&c=Orders&a=checkPtOrderInfo&goodsId="+goodsId;
+                    }else{
+                        location.reload(false);
+                    }
+                }
+            }
+        });
+    }
+
+    function editAddr(aid){
+        if(GetQueryString('from')=='order'){
+            window.location.href="/index.php?m=Home&c=UserAddress&a=edit_edit&from=order&addressId="+aid;
+        }else if(GetQueryString('from')=='jforder'){
+            window.location.href="/index.php?m=Home&c=UserAddress&a=edit_edit&from=jforder&addressId="+aid;
+        }
+        else if(GetQueryString('from')=='gotopay'){
+            window.location.href="/index.php?m=Home&c=UserAddress&a=edit_edit&from=gotopay&addressId="+aid;
+        }else if(GetQueryString('from')=='ptorder'){
+            var goodsId = GetQueryString('goodsId');
+            window.location.href="/index.php?m=Home&c=UserAddress&a=edit_edit&from=user&addressId="+aid+"&goodsId="+goodsId;
+        }
+        else{
+            window.location.href="/index.php?m=Home&c=UserAddress&a=edit_edit&from=user&addressId="+aid;
+        }
+    }
+
+    function delAddress(addressId){
+        layer.confirm('您确定删除该地址吗？',{icon: 3, title:'系统提示'}, function(tips){
+            var ll = layer.msg('数据处理中，请稍候...', {icon: 16,shade: [0.5, '#B3B3B3']});
+            jQuery.post('/index.php?m=Home&c=UserAddress&a=del' ,{id:addressId},function(rsp) {
+                layer.close(ll);
+                layer.close(tips);
+                if(rsp){
+                    location.reload();
+                    $("#caddress_"+addressId).remove();
+                    $("#consigneeId").val(0);
+                    $("#seladdress_0").click();
+                }else{
+                    WST.msg("删除失败", {icon: 5});
+                }
+            });
+        });
+
+    }
+
+    function GetQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+</script>
+<script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+<script src="__ROOT__/Apps/Home/View/mobile/js/orders.js"></script>
+</html>

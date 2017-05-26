@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>商品详情</title>
+    <!--字体图标-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+    <!--公共样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+    <!--自定义样式-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+    <!--轮播-->
+    <link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/trundle.css">
+    <!--jquery库有此轮播的需要引用低版本的库-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+    <!--rem自适应-->
+    <script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+    <script src="__PUBLIC__/plugins/layer/layer.min.js"></script>
+    <!--需要放在头部，否则倒计时不执行-->
+    <script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+
+</head>
+<body style="background-color:#f5f5f5;">
+<!--主体部分begin-->
+<div class="wrap pad-bot">
+    <!--轮播begin 建议上传图片最佳比例2:1-->
+    <div class="main_visual">
+        <div class="flicking_con">
+            <volist name="goodsImgs" key="k" id="vo">
+                <a href="#">$k</a>
+            </volist>
+        </div>
+        <div class="main_image">
+            <ul>
+                <volist name="goodsImgs" key="k" id="vo">
+                    <li><span class="img_3"><img src="__ROOT__/{$vo['goodsImg']}" ></span></li>
+                </volist>
+            </ul>
+            <a href="javascript:;" id="btn_prev"></a>
+            <a href="javascript:;" id="btn_next"></a>
+        </div>
+    </div>
+    <!--轮播end-->
+    <!--产品信息begin-->
+    <div class="detail-panel">
+        <div class="detail-tit">
+            <h3>{$goodsDetails["goodsName"]}</h3>
+            <if condition="$goodsDetails['isSelf'] eq 1"><span class="dt-icon">自营</span></if>
+        </div>
+        <div class="detail-price box-bar">
+            <div class="dt-price box-bar-list">￥{$goodsDetails.shopPrice}</div>
+            <div class="dt-num box-bar-list">商品数量：{$goodsDetails.goodsStock}</div>
+        </div>
+    </div>
+    <if condition="$tuanzhang eq 1">
+    <else/>
+    <div class="detail-add-cart cor">
+        支付开团并邀请<span class="cor">{$goodsDetails['ptrs']-1}</span>人参团，人数不足结束后自动退款
+    </div>
+    </if>
+    <if condition="$uInfo['0']['userName'] neq ''">
+    <div class="detail-add-cart cor bgnone">
+        以下小伙伴正在发起团购，您可以直接参与
+    </div><else/></if>
+    <!--产品信息end-->
+    <!--去参团begin-->
+    <volist name="uInfo" id="vo">
+    <input type="hidden" id="endtime_1" value="{$vo.enddate}" />
+    <div class="goto-tour">
+        <div class="tour-bar">
+            <ul class="box-bar">
+                <li class="img-part cell" style="background-image: url({$vo.userPhoto});">
+                </li>
+                <li class="join-inf box-bar-list">
+                    <div class="tit fl">
+                        {$vo.userName}
+                    </div>
+                    <div class="inf fr">
+                        <div class="inf-bar cor">还差{$goodsDetails['ptrs']-$vo['count']}人成团</div>
+                        <div class="inf-bar">
+                            剩余
+                            <div class="time-item dis-inl">
+                                <strong id="t_d_{$vo.leaderid}">0</strong>
+                                <strong id="t_h_{$vo.leaderid}">0</strong>
+                                <strong id="t_m_{$vo.leaderid}">0</strong>
+                                <strong id="t_s_{$vo.leaderid}">0</strong>
+                            </div><!--倒计时模块-->
+                        </div>
+                    </div>
+                </li>
+                <input type="hidden" id="leaderid" value="{$vo.leaderid|default=0}"/>
+                <if condition="$vo['leaderid'] eq $uid">
+                    <li class="join-btn cell" style="background:#CCCCCC; color:#ffffff;">
+                        去参团
+                    </li>
+                <else/>
+                <li class="join-btn cell" onclick="javascript:goToPay(1,{$vo.leaderid});">
+                    去参团
+                </li>
+                </if>
+            </ul>
+        </div>
+    </div>
+
+        <script>
+            function GetRTime(){
+                var endtime = document.getElementById("endtime_1").value;
+                var EndTime= new Date(endtime); // '2016-12-22 14:45:40'
+                var NowTime = new Date();
+                var t =EndTime.getTime() - NowTime.getTime();
+                var d=0;
+                var h=0;
+                var m=0;
+                var s=0;
+                if(t>=0){
+                    d=Math.floor(t/1000/60/60/24);
+                    h=Math.floor(t/1000/60/60%24);
+                    m=Math.floor(t/1000/60%60);
+                    s=Math.floor(t/1000%60);
+                }
+                document.getElementById("t_d_{$vo.leaderid}").innerHTML = d + "天";
+                document.getElementById("t_h_{$vo.leaderid}").innerHTML = h + "时";
+                document.getElementById("t_m_{$vo.leaderid}").innerHTML = m + "分";
+                document.getElementById("t_s_{$vo.leaderid}").innerHTML = s + "秒";
+            }
+             setInterval(GetRTime, 0);
+        </script>
+
+    </volist>
+    <!--去参团end-->
+    <!--商品详情和商品评价begin-->
+    <div class="detail-main mar-top">
+        <div class="dt-bdtab">
+            <div class="dt-bdtab-inf table-wrap on">
+                {$goodsDetails["goodsDesc"]}
+            </div>
+        </div>
+    </div>
+    <!--商品详情和商品评价end-->
+</div>
+<!--主体部分end-->
+<!--固定的底部begin-->
+<footer class="footer">
+    <div class="detail-footer">
+        <div class="toshop foot-block1">
+            <a href="{:U('Home/Shops/toShopHome/',array('shopId'=>$goodsDetails['shopId']))}">
+            <i class="iconfont">&#xe607;</i>
+                <p>进店逛逛</p></a>
+        </div>
+        <div class="share foot-block1">
+            <i class="iconfont">&#xe605;</i>
+            <p>分享</p>
+        </div>
+        <!-- <div class="buynow foot-block2" onClick="addCart({$goodsDetails['goodsId']},1);">我要开团</div> -->
+        <if condition="($tuanzhang eq 1) OR ($isLate eq 1)">
+            <div class=" foot-block2" style="background:#CCCCCC; color:#ffffff;">我要开团</div>
+        <else/>
+            <div class="buynow foot-block2" onclick="javascript:goToPay(0,0);">我要开团</div>
+        </if>
+    </div>
+</footer>
+<!--固定的底部end-->
+</body>
+<!--轮播begin-->
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/trundle.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/jquery.event.drag-1.5.min.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/jquery.touchSlider.js"></script>
+<!--轮播end-->
+
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__ROOT__/Apps/Home/View/mobile/js/head.js" type="text/javascript"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/js/common.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/js/goods.js"></script>
+
+<!-- <script src="__ROOT__/Apps/Home/View/mobile/js/cartpaylist.js"></script> -->
+<script type="text/javascript">
+    //去结算
+    function goToPay(state,leaderid){
+        var flag = true;
+        var cflag = true;
+        var chkId;
+        var payGoodsNum = 1;
+        if(WST.IS_LOGIN==0){
+            loginWin();
+            return;
+        }
+        if(state == 0){
+            location.href = '/index.php?m=Home&c=Orders&a=checkPtOrderInfo&goodsId={$goodsDetails["goodsId"]}&rnd='+new Date().getTime();
+        }else{
+            location.href = '/index.php?m=Home&c=Orders&a=checkPtOrderInfo&goodsId={$goodsDetails["goodsId"]}&leaderid='+leaderid+'&f=can&rnd='+new Date().getTime();
+        }
+
+    }
+</script>
+</html>

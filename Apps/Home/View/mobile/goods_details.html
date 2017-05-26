@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>{$goodsDetails["goodsName"]}-{$CONF['mallTitle']}</title>
+	<!--字体图标-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+	<!--公共样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+	<!--自定义样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+	<!--轮播-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/trundle.css">
+	<!--jquery库有此轮播的需要引用低版本的库-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+	<!--rem自适应-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/layer1.js"></script>
+
+
+
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap pad-bot">
+	<!--轮播begin 建议上传图片最佳比例2:1-->
+	<div class="main_visual">
+		<div class="flicking_con">
+			<volist name="goodsImgs" key="k" id="vo">
+				<a href="#">$k</a>
+			</volist>
+		</div>
+		<div class="main_image">
+			<ul>
+				<volist name="goodsImgs" key="k" id="vo">
+					<li><span class="img_3"><img src="__ROOT__/{$vo['goodsImg']}" ></span></li>
+				</volist>
+			</ul>
+			<a href="javascript:;" id="btn_prev"></a>
+			<a href="javascript:;" id="btn_next"></a>
+		</div>
+	</div>
+	<!--轮播end-->
+	<!--产品信息begin-->
+	<div class="detail-panel">
+		<div class="detail-tit">
+			<h3>{$goodsDetails["goodsName"]}</h3>
+			<if condition="$goodsDetails.isSelf eq 1"><span class="dt-icon">自营</span></if>
+		</div>
+		<div class="detail-price box-bar">
+			<div class="dt-price box-bar-list">￥{$goodsDetails["shopPrice"]}</div>
+			<div class="dt-num box-bar-list">商品数量：{$goodsDetails["goodsStock"]}</div>
+		</div>
+	</div>
+	<div class="detail-add-cart box-bar" id="haveGoodsToBuy">
+		<div class="dt-hdnmu box-bar-list">数量</div>
+		<div class="dt-bdnum box-bar-list">
+			<div class="inner-dt-bdnum">
+				<span class="reduce1" onclick="changebuynum(1)">-</span>
+				<input class="count-input" id="buy-num" type="text" value="1" maxVal="{$goodsDetails['goodsStock']}" maxlength="3" onkeypress="return WST.isNumberKey(event);" onkeyup="changebuynum(0);" autocomplete="off"/>
+				<span class="add1" onclick="changebuynum(2)">+</span>
+			</div>
+		</div>
+	</div>
+	<!--产品信息end-->
+	<!--商品详情和商品评价begin-->
+	<div class="detail-main">
+		<div class="dt-hdtab">
+			<ul class="box-bar">
+				<li class="box-bar-list detail on">商品详情</li>
+				<li class="box-bar-list evaluate">商品评价</li>
+			</ul>
+		</div>
+		<div class="dt-bdtab">
+			<div class="dt-bdtab-inf table-wrap on">
+                {$goodsDetails["goodsDesc"]}
+			</div>
+			<div class="dt-bdtab-inf">
+				<ul class="evaluate-wrap">
+					<!--评价内容循环begin-->
+                    <volist name="pingjia" id="vo">
+					<li class="dtcmc-li">
+						<div class="buyers-inf">
+							<!--建议头像上传正方形-->
+							<span class="head"><img src="{$vo.userPhoto|default='__ROOT__/Apps/Home/View/mobile/images/wode/wd_1mrtx.png'}" alt=""></span>
+							<span class="name">{$vo.userName}</span>
+							<span class="time">{$vo.createTime|substr=0,10}</span>
+						</div>
+						<div class="remark-inf">{$vo.content}</div>
+						<div class="remark-img">
+							<img src="{$vo.img.0}" alt=""><img src="{$vo.img.1}" alt="">
+							<img src="{$vo.img.2}" alt=""><img src="{$vo.img.3}" alt="">
+						</div>
+					</li>
+                    </volist>
+					<!--评价内容循环end-->
+				</ul>
+				<!--<div class="loadmore">加载更多评价</div>-->
+			</div>
+		</div>
+	</div>
+	<!--商品详情和商品评价end-->
+</div>
+<!--主体部分end-->
+<!--固定的底部begin-->
+<footer class="footer">
+	<input type="hidden" id="userid" value="{$userid}">
+	<div class="detail-footer">
+		<div class="toshop foot-block1">
+			<a href="{:U('Home/Shops/toShopHome/',array('shopId'=>$goodsDetails['shopId']))}">
+				<i class="iconfont">&#xe607;</i>
+				<p>进店逛逛</p></a>
+		</div>
+		<div class="share foot-block1 eject-btn">
+			<i class="iconfont">&#xe605;</i>
+			<p>分享</p>
+		</div>
+		<div class="cart foot-block1 post-rela">
+			<a href="{:U('Home/Cart/getCartInfo')}">
+				<i class="iconfont">&#xe608;</i>
+				<p>购物车</p>
+				<span class="round-dot"></span>
+			</a>
+		</div>
+		<div class="addcart foot-block2" onclick="addCart({$goodsDetails['goodsId']},0,'{$goodsDetails['goodsThums']}'); addtocart();">加入购物车</div>
+		<div class="buynow foot-block2" onClick="addCart({$goodsDetails['goodsId']},1);">立即购买</div>
+	</div>
+</footer>
+<!--固定的底部end-->
+<!--弹框begin-->
+<div class="prompt-wrap eje-black-wrap">
+	<div class="share-inf-box">
+		<p class="invita dt-invita">点击右上角按钮，发送给朋友或朋友圈</p>
+	</div>
+	<div class="jt-nav"></div>
+</div>
+<!--弹框end-->
+</body>
+<script>
+	$(".remark-img img").live("click",function(){
+		var _src=$(this).attr("src");
+		layer.open({
+			type: 1,
+			title: false,
+			closeBtn: 0,
+			area: '80%',
+			skin: 'layui-layer-nobg', //没有背景色
+			shadeClose: true,
+			content: "<img src='"+_src+"'/>"
+		});
+	});
+</script>
+<!--轮播begin-->
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/trundle.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/jquery.event.drag-1.5.min.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/jquery.touchSlider.js"></script>
+<!--轮播end-->
+<!--首页模块自定义js-->
+<script src="__PUBLIC__/js/think.js"></script>
+<script type="text/javascript">
+	var WST = ThinkPHP = window.Think = {
+		"ROOT"   : "__ROOT__",
+		"APP"    : "__APP__",
+		"PUBLIC" : "__PUBLIC__",
+		"DEEP"   : "{:C('URL_PATHINFO_DEPR')}",
+		"MODEL"  : ["{:C('URL_MODEL')}", "{:C('URL_CASE_INSENSITIVE')}", "{:C('URL_HTML_SUFFIX')}"],
+		"VAR"    : ["{:C('VAR_MODULE')}", "{:C('VAR_CONTROLLER')}", "{:C('VAR_ACTION')}"],
+		"DOMAIN" : "{:WSTDomain()}",
+		"CITY_ID" : "{$currArea['areaId']}",
+		"CITY_NAME" : "{$currArea['areaName']}",
+		"DEFAULT_IMG": "{:WSTDomain()}/{$CONF['goodsImg']}",
+		"MALL_NAME" : "{$CONF['mallName']}",
+		"SMS_VERFY"  : "{$CONF['smsVerfy']}",
+		"PHONE_VERFY"  : "{$CONF['phoneVerfy']}",
+		"IS_LOGIN" :"{$WST_IS_LOGIN}"
+	}
+
+</script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/js/common.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/js/goods.js"></script>
+
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript">
+	if({$notexist} == 1){
+        layer.msg('对比起，相关商品不存在或已下架，请选购其他商品！', function(){
+            location.href= '/index.php?m=Home&c=Index&a=mall';
+        });
+	}
+
+</script>
+
+
+</html>

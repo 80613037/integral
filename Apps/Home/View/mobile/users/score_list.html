@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>我的积分</title>
+	<!--字体图标-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+	<!--公共样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/wode.css">
+	<!--jquery库有此轮播的需要引用低版本的库-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-1.8.3.min.js"></script>
+	<!--rem自适应-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+</head>
+<body style="background: #f4f6f9;">
+<div class="wode">
+	<div class="qiandao">
+		<div class="qd-img">
+			<img src="__ROOT__/Apps/Home/View/mobile/images/wd_9jftb.png" alt="">
+		</div>
+		<div class="qd-wz">
+			我的积分：<b style="font-size:0.48rem">{$userScore}</b>
+		</div>
+		<div class="jfsc">
+			<a href="{:U('Home/Index/jfmall')}">积分商城</a>
+		</div>
+	</div>
+	<div class="zh-detail">
+		<h3>账户明细</h3>
+		<span></span>
+		<ul>
+			<volist name="uScoreInfo" id="uSInfo">
+			<li>
+				<if condition="$uSInfo['scoreType'] eq 1">
+				<p>{$uSInfo.dataRemarks}<span>+{$uSInfo.score}</span></p>
+				<else/>
+				<p>{$uSInfo.dataRemarks}<span>-{$uSInfo.score}</span></p>
+				</if>
+				<p class="date-aa">{$uSInfo.createTime|substr=0,10}</p>
+			</li>
+			</volist>
+
+		</ul>
+	</div>
+</div>
+</body>
+</html>

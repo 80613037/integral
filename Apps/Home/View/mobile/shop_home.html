@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>{$shops['shopName']}</title>
+	<!--字体图标-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+	<!--公共样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+	<!--自定义样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+	<!--轮播-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/trundle.css">
+	<!--jquery库有此轮播的需要引用低版本的库-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+	<!--rem自适应-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+	<!--需要放在头部，否则倒计时不执行-->
+	<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/custom-index.js"></script>
+</head>
+<body>
+<!--主体部分begin-->
+<div class="wrap pad-bot">
+	<!--广告位 建议上传图片（750*370）begin-->
+	<!--轮播begin 建议上传图片最佳比例2:1-->
+	<div class="main_visual">
+		<div class="flicking_con">
+			<volist name="shops['shopAds']" id="vo" key='k'>
+				<a href="#">{$k}</a>
+			</volist>
+		</div>
+		<div class="main_image">
+			<ul>
+				<volist name="shops['shopAds']" id="vo" key='i'>
+					<li><span class="img_2"><a href="{$vo['adUrl']}"><img src="__ROOT__/{$vo.adImg}"></a></span></li>
+				</volist>
+			</ul>
+			<a href="javascript:;" id="btn_prev"></a>
+			<a href="javascript:;" id="btn_next"></a>
+		</div>
+	</div>
+	<!--轮播end-->
+	<!--广告位 建议上传图片（750*370）end-->
+	<!--店铺信息begin-->
+	<a href="{:U('Home/Shops/getShopDesc', array('shopId'=>$shops['shopId']))}">
+	<div class="single-row shop-panel box-bar pad10">
+		<div class="tit">
+			<div class="tit-img" style="background-image: url(__ROOT__/{$shops.shopImg});"></div>
+		</div>
+		<div class="box-bar-list shop-name">
+			{$shops.shopName}
+		</div>
+		<div class="position-jt"></div>
+	</div></a>
+	<!--店铺信息end-->
+	<!--tab选项卡标题 begin-->
+	<div class="shop-tab-hd">
+		<ul class="shop-tab-hd-ul box-bar">
+
+			<if condition="$type eq ''">
+				<li class="box-bar-list on">
+			<else/>
+				<li class="box-bar-list">
+			</if>
+			<a href="{:U('Home/Shops/toShopHome',array('shopId'=>$shops['shopId']))}">全部商品</a>
+				</li>
+			<if condition="$type eq 'ms'">
+				<li class="box-bar-list on">
+					<else/>
+				<li class="box-bar-list">
+			</if>
+			<a href="{:U('Home/Shops/toShopHome',array('shopId'=>$shops['shopId'],'type'=>'ms'))}">限时特惠</a>
+				</li>
+			<if condition="$type eq 'pt'">
+				<li class="box-bar-list on">
+			<else/>
+				<li class="box-bar-list">
+			</if>
+				<a href="{:U('Home/Shops/toShopHome',array('shopId'=>$shops['shopId'],'type'=>'pt'))}">拼团</a></li>
+
+			<if condition="$type eq ''">
+				<li class="box-bar-list on">
+					<else/>
+				<li class="box-bar-list">
+			</if>
+			<a href="{:U('Home/Shops/toShopHome',array('shopId'=>$shops['shopId'],'type'=>'zc'))}">众筹</a></li>
+		</ul>
+	</div>
+	<!--tab选项卡标题 end-->
+	<!--全部商品展示begin-->
+	<div class="pro-wrap shop-pro-wrap on">
+		<!--商品循环部分(建议图片200*190)begin-->
+		<volist name="shopsgoods['root']" id="vo" key='i'>
+		<div class="pro-list">
+			<div class="pro-img-pannel table-wrap">
+			<if condition="$vo['ispintuan'] eq 1">
+				<a href="{:U('Home/Goods/getGoodsDetailsPt/',array('goodsId'=>$vo['goodsId']))}">
+			<else/>
+				<a href="{:U('Home/Goods/getGoodsDetails/',array('goodsId'=>$vo['goodsId']))}">
+			</if>
+
+				<img src="__ROOT__{$vo.goodsThums|default='__ROOT__/Apps/Home/View/mobile/images/wode/wd_1mrtx.png'}" width="200" height="200">
+				</a>
+			</div>
+			<div class="img-title-bar">
+				{$vo.goodsName}
+			</div>
+			<div class="img-price">
+				<span class="discount-price">￥{$vo.shopPrice}</span>
+				<if condition="$type eq ''">
+				<span class="group-num">已售：{$vo.totalnum}</span>
+				<elseif condition="$type eq 'ms'" />
+				<del class="cost-price">￥{$vo.marketPrice}</del>
+				</if>
+			</div>
+		</div>
+		</volist>
+
+		<!--商品循环部分end-->
+	</div>
+	<!--全部商品展示end-->
+	<!--秒杀商品展示begin-->
+	<div class="pro-wrap shop-pro-wrap">
+		<!--商品循环部分(建议图片200*190)begin-->
+		<volist name="miaosha" id="ms" key='i'>
+		<div class="pro-list">
+			<div class="pro-img-pannel table-wrap">
+				<a href="{:U('Home/Goods/getGoodsDetails/',array('goodsId'=>$ms['goodsId']))}">
+					<img src="__ROOT__{$ms.goodsThums|default='__ROOT__/Apps/Home/View/mobile/images/wode/wd_1mrtx.png'}" width="200" height="200">
+				</a>
+			</div>
+			<div class="img-title-bar">
+				泰国新鲜山竹进口油麻竹泰国新鲜山竹进口油麻竹
+			</div>
+			<div class="img-price">
+				<span class="discount-price">￥20.9</span>
+				<del class="cost-price">￥20.9</del>
+			</div>
+		</div>
+		</volist>
+		<!--商品循环部分end-->
+
+	</div>
+	<!--秒杀商品展示end-->
+	<!--拼团商品展示begin-->
+	<div class="pro-wrap shop-pro-wrap">
+		<!--商品循环部分(建议图片200*190)begin-->
+		<div class="pro-list">
+			<div class="pro-img-pannel table-wrap">
+				<img src="__ROOT__/Apps/Home/View/mobile/images/sy_1banner_02.jpg">
+			</div>
+			<div class="img-title-bar">
+				泰国新鲜山竹进口油麻竹泰国新鲜山竹进口油麻竹
+			</div>
+			<div class="img-price">
+				<span class="discount-price">￥20.9</span>
+				<del class="cost-price">￥20.9</del>
+				<span class="group-num">10人团</span>
+			</div>
+		</div>
+		<!--商品循环部分end-->
+		<!--商品循环部分begin-->
+		<div class="pro-list">
+			<div class="pro-img-pannel table-wrap">
+				<img src="__ROOT__/Apps/Home/View/mobile/images/sy_1banner_02.jpg">
+			</div>
+			<div class="img-title-bar">
+				泰国新鲜山竹进口油麻竹泰国新鲜山竹进口油麻竹
+			</div>
+			<div class="img-price">
+				<span class="discount-price">￥20.9</span>
+				<del class="cost-price">￥20.9</del>
+				<span class="group-num">10人团</span>
+			</div>
+		</div>
+		<!--商品循环部分end-->
+		<!--商品循环部分begin-->
+		<div class="pro-list">
+			<div class="pro-img-pannel table-wrap">
+				<img src="__ROOT__/Apps/Home/View/mobile/images/sy_1banner_02.jpg">
+			</div>
+			<div class="img-title-bar">
+				泰国新鲜山竹进口油麻竹泰国新鲜山竹进口油麻竹
+			</div>
+			<div class="img-price">
+				<span class="discount-price">￥20.9</span>
+				<del class="cost-price">￥20.9</del>
+				<span class="group-num">10人团</span>
+			</div>
+		</div>
+		<!--商品循环部分end-->
+		<!--商品循环部分begin-->
+		<div class="pro-list">
+			<div class="pro-img-pannel table-wrap">
+				<img src="__ROOT__/Apps/Home/View/mobile/images/sy_1banner_02.jpg">
+			</div>
+			<div class="img-title-bar">
+				泰国新鲜山竹进口油麻竹泰国新鲜山竹进口油麻竹
+			</div>
+			<div class="img-price">
+				<span class="discount-price">￥20.9</span>
+				<del class="cost-price">￥20.9</del>
+				<span class="group-num">10人团</span>
+			</div>
+		</div>
+		<!--商品循环部分end-->
+	</div>
+	<!--拼团商品展示end-->
+	<!--众筹商品展示begin-->
+	<div class="pro-wrap shop-pro-wrap">
+		<!--商品循环部分(建议图片200*190)begin-->
+		<div class="pro-list">
+			<div class="pro-img-pannel table-wrap">
+				<img src="__ROOT__/Apps/Home/View/mobile/images/sy_1banner_02.jpg">
+			</div>
+			<div class="img-title-bar">
+				泰国新鲜山竹进口油麻竹泰国新鲜山竹进口油麻竹
+			</div>
+			<div class="img-title-bar">
+				<div class="ui-progressbar">
+					<div class="ui-progressbar-value" style="width:20%;">
+					</div>
+				</div>
+			</div>
+			<div class="img-price crowd-img-price">
+				<span class="price-tit">已筹：</span>
+				<span class="price-num">￥200万</span>
+				<span class="group-num">184%</span>
+			</div>
+		</div>
+		<!--商品循环部分end-->
+		<!--商品循环部分begin-->
+		<div class="pro-list">
+			<div class="pro-img-pannel table-wrap">
+				<img src="__ROOT__/Apps/Home/View/mobile/images/sy_1banner_02.jpg">
+			</div>
+			<div class="img-title-bar">
+				泰国新鲜山竹进口油麻竹泰国新鲜山竹进口油麻竹
+			</div>
+			<div class="img-title-bar">
+				<div class="ui-progressbar">
+					<div class="ui-progressbar-value" style="width:80%;">
+					</div>
+				</div>
+			</div>
+			<div class="img-price">
+				<span class="discount-price">￥20.9</span>
+				<del class="cost-price">￥20.9</del>
+				<span class="group-num">34%</span>
+			</div>
+		</div>
+		<!--商品循环部分end-->
+	</div>
+	<!--众筹商品展示end-->
+</div>
+<!--主体部分end-->
+</body>
+<!--轮播begin-->
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/trundle.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/jquery.event.drag-1.5.min.js"></script>
+<script type="text/javascript" src="__ROOT__/Apps/Home/View/mobile/scripts/jquery.touchSlider.js"></script>
+<!--轮播end-->
+</html>

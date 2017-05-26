@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>登录</title>
+	<!--字体图标-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/iconfont/iconfont.css">
+	<!--公共样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/NormalizeFile.css">
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/public.css">
+	<!--自定义样式-->
+	<link rel="stylesheet" href="__ROOT__/Apps/Home/View/mobile/styles/style.css">
+	<!--jquery库-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/jquery-3.1.0.js"></script>
+	<!--rem自适应-->
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/flexible.js"></script>
+	<script src="__ROOT__/Apps/Home/View/mobile/scripts/layer1.js"></script>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<!--<script src="__ROOT__/Apps/Home/View/mobile/js/common.js"></script>-->
+	<script src="__ROOT__/Apps/Home/View/mobile/js/userlogin.js"></script>
+</head>
+
+<body class="bgbody">
+<!--主体部分begin-->
+<div class="wrap">
+	<div class="reg-top"></div>
+	<form class="reg-form" id="form1">
+		<!--单行begin-->
+		<div class="field-bar">
+			<div class="label">手机号</div>
+			<div class="field-control">
+				<input type="text" id="phone" class="input-required" autocomplete="off" placeholder="请输入11位手机号" maxlength="11"/>
+			</div>
+		</div>
+		<!--单行end-->
+		<!--单行begin-->
+		<div class="field-bar">
+			<div class="label">密码</div>
+			<div class="field-control">
+				<input type="password" id="pwd" class="input-required" autocomplete="off" placeholder="请输入6-16位数字或字母"/>
+			</div>
+		</div>
+		<!--单行end-->
+		<div class="submit-bar">
+
+			<button type="button" class="submit-btn sel" id="loginsubmit" onclick="checkLoginInfo()">登录</button>
+		</div>
+		<div class="reginf">
+			<a class="ft-pass" href="/index.php?m=Home&c=Users&a=forgetPass">忘记密码？</a>
+			<a class="fr-reg" href="{:U('Home/Users/regist')}">新用户注册</a>
+		</div>
+	</form>
+</div>
+<!--主体部分end-->
+<div class="stroll-bar">
+	<a class="stroll-btn" href="{:U('Home/Index/mall')}">先逛逛</a>
+</div>
+</body>
+<!--登陆模块所用js-->
+<script src="__ROOT__/Apps/Home/View/mobile/scripts/custom-log.js"></script>
+</html>
